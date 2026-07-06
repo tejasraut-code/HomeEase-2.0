@@ -1,0 +1,33 @@
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\appsettings.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.staticwebassets.runtime.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.staticwebassets.endpoints.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.exe
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.deps.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.runtimeconfig.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.dll
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\bin\Debug\net8.0\HomeEase 2.0 MVC.pdb
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.AssemblyInfoInputs.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.AssemblyInfo.cs
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.csproj.CoreCompileInputs.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.RazorAssemblyInfo.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.RazorAssemblyInfo.cs
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\scopedcss\bundle\HomeEase 2.0 MVC.styles.css
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\scopedcss\projectbundle\HomeEase 2.0 MVC.bundle.scp.css
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.dll
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\refint\HomeEase 2.0 MVC.dll
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.pdb
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.genruntimeconfig.cache
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\ref\HomeEase 2.0 MVC.dll
