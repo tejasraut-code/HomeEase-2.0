@@ -31,3 +31,4 @@ C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.
 C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.pdb
 C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.genruntimeconfig.cache
 C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\ref\HomeEase 2.0 MVC.dll
+C:\Users\Tejas Raut\Desktop\WebDev Coding_Workspace\HomeEase 2.0 MVC\HomeEase 2.0 MVC\obj\Debug\net8.0\HomeEase 2.0 MVC.sourcelink.json
