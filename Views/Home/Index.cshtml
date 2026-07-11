@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<HomeEase_2._0_MVC.Models.DomainModels.CategoriesModels>
 
     @* hero Section *@
     <section id="hero" class="py-5">
@@ -47,66 +48,22 @@
 
             <div class="row">
 
-                <div class="col-lg-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 mb-4">
+                    <div class="card shadow h-100" id="cardC">
+                        <div class="card-body text-center" >
+                            @* <div class="display-3">🧑🏼‍🔧</div> *@
+                            <img class="card-img rounded d-flex justify-content-center align-items-center" height="150px" width="150px" src="~/images/@item.Images" />
+                            <h4 class="card-title">@item.CategoriesName</h4>
+                            <p class="card-text">@item.Description</p>
 
-                    @* Plumber card *@
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="text-center">
-
-                                <div class="display-3">🧑🏼‍🔧</div>
-
-                                <h5 class="card-title">Plumber</h5>
-                                <p>Expert Plumbing services for home and offices.</p>
-
-                                <a href="#" class="btn btn-primary">Explore</a>
-                            </div>
+                            <a class="btn btn-primary w-auto" href="#">Explore </a>
                         </div>
                     </div>
                 </div>
-                @* Cleaning card *@
-                    <div class="col-lg-3">
-                    <div class="card shadow-lg">
-                        <div class="card-body">
-                            <div class="text-center">
-                            <div class="display-3">🧹</div>
-                            <h5 class="card-title">Cleaning</h5>
-                            <p>Home & office cleaning.</p>
+            }
 
-                            <a href="#" class="btn btn-primary">Explore</a>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    @* Electrician card *@
-                    <div class="col-lg-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="text-center">
-                            <div class="display-3">👩🏻‍🔧</div>
-                            <h5 class="card-title">Electrician Card</h5>
-                            <p class="card-text">Safe electrical repairs.</p>
-                            <a href="#" class="btn btn-primary">Explore</a>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    @* Painting Card *@
-                    <div class="col-lg-3">
-                    <div class="card shadow-none">
-                        <div class="card-body">
-                            <div class="text-center">
-                            <div class="display-3">🎨</div>
-                            <h5 class="card-title">Painting Card</h5>
-                            <p class="card-text">Interior & exterior painting.</p>
-                            <a href="#" class="btn btn-primary">Explore</a>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                   
             </div>
         </div>
     </section>
