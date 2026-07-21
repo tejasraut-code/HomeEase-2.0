@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="Models\DTOs\" />
     <Folder Include="Models\ViewModels\" />
-    <Folder Include="Data\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Helpers\" />
     <Folder Include="Extensions\" />
@@ -18,6 +17,15 @@
     <Folder Include="Services\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.28" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.27" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.28">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

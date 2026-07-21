@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<HomeEase_2._0_MVC.Models.DomainModels.CategoriesModels>
+@model List<HomeEase_2._0_MVC.Models.DomainModels.CategoryModel>
 
     @* hero Section *@
     <section id="hero" class="py-5">
@@ -46,6 +46,8 @@
         <div class="container">
             <h2 class="text-center mb-5">Popular Categories</h2>
 
+        <a class="btn btn-info mb-3" asp-controller="Home" asp-action="Create" >Add Category</a>
+
             <div class="row">
 
             @foreach (var item in Model)
@@ -54,8 +56,8 @@
                     <div class="card shadow h-100" id="cardC">
                         <div class="card-body text-center" >
                             @* <div class="display-3">🧑🏼‍🔧</div> *@
-                            <img class="card-img rounded d-flex justify-content-center align-items-center" height="150px" width="150px" src="~/images/@item.Images" />
-                            <h4 class="card-title">@item.CategoriesName</h4>
+                            <img class="card-img rounded d-flex justify-content-center align-items-center" height="150px" width="150px" src="~/images/@item.Image" />
+                            <h4 class="card-title">@item.CategoryName</h4>
                             <p class="card-text">@item.Description</p>
 
                             <a class="btn btn-primary w-auto" href="#">Explore </a>

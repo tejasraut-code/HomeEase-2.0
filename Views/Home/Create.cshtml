@@ -1,0 +1,33 @@
+﻿@model CategoryModel
+
+<form asp-action="Create" method="post">
+
+    <div class="container">
+
+        <div class="mt-3 mb-3">
+
+            <label asp-for="CategoryName" class="form-label">Name :</label>
+            <input asp-for="CategoryName" class="form-control"/>
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description :</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Image" class="form-label">Images :</label>
+            <input asp-for="Image" class="form-control" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success"> Save </button>
+
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
