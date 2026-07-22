@@ -69,6 +69,7 @@ namespace HomeEase_2._0_MVC.Controllers
             return View(categories);
         }
 
+        //Create 
         public IActionResult Create()
         {
             return View();
@@ -88,6 +89,33 @@ namespace HomeEase_2._0_MVC.Controllers
             return View(category);
         }
 
+        //Edit
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+
+            CategoryModel? categoryedit = _context.Category.Find(id);
+
+            if(categoryedit == null)
+            {
+                return NotFound();
+            }
+
+            return View(categoryedit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CategoryModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Category.Update(category);
+
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
+        }
 
 
         public IActionResult Privacy()
