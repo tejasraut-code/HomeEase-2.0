@@ -19,10 +19,10 @@ namespace HomeEase_2._0_MVC.Controllers
             _context = context;
         }
 
+      
         public IActionResult Index()
         {
 
-            
             List<CategoryModel> categories = _context.Category.ToList();
 
             //    List<CategoriesModels> categories = new()
@@ -115,6 +115,24 @@ namespace HomeEase_2._0_MVC.Controllers
                 return RedirectToAction("Index");
             }
             return View(category);
+        }
+
+
+        //Delete 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            CategoryModel delCategory = _context.Category.Find(id);
+
+            if(delCategory == null)
+            {
+                return NotFound();
+            }
+
+            _context.Category.Remove(delCategory);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
 
