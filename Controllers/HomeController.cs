@@ -2,6 +2,7 @@ using System.Diagnostics;
 using HomeEase_2._0_MVC.Data;
 using HomeEase_2._0_MVC.Models;
 using HomeEase_2._0_MVC.Models.DomainModels;
+using HomeEase_2._0_MVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,12 +12,15 @@ namespace HomeEase_2._0_MVC.Controllers
     {
         private readonly AppDbContext _context;
 
+        private readonly IWebHostEnvironment _environment;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context, IWebHostEnvironment environment)
         {
             _logger = logger;
             _context = context;
+            _environment = environment;
         }
 
       
@@ -76,10 +80,19 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryModel category)
+        public IActionResult Create(CategoryViewModel ViewCategory)
         {
             if(ModelState.IsValid)
             {
+                if(ViewCategory.BrowserImage != null)
+                {
+                    var uploadsFolder = Path.Combine(_environment.WebRootPath,"images");
+                    var fileName = ViewCategory.BrowserImage.FileName;
+
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+                }
+
+
                 _context.Category.Add(category);
                 _context.SaveChanges();
 
