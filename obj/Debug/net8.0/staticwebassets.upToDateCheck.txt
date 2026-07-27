@@ -2,6 +2,7 @@ wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\Carpenter.jpg
 wwwroot\images\Cleaner.jpg
+wwwroot\images\default.jpg
 wwwroot\images\Electrician.jpg
 wwwroot\images\Painter.jpg
 wwwroot\images\Plumber.jpg

@@ -1,6 +1,6 @@
-﻿@model CategoryModel
+﻿@model CategoryViewModel
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
 
     <div class="container">
 
@@ -18,9 +18,10 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Image" class="form-label">Images :</label>
-            <input asp-for="Image" class="form-control" />
-            <span asp-validation-for="Image" class="text-danger"></span>
+            <label asp-for="BrowserImage" class="form-label">Images :</label>
+            @* <input asp-for="Image" class="form-control" /> *@
+            <input type="file" asp-for="BrowserImage" class="form-control" />
+            <span asp-validation-for="BrowserImage" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-success"> Save </button>

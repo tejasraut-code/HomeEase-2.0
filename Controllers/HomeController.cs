@@ -10,9 +10,9 @@ namespace HomeEase_2._0_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context;  //EF DI rough meaning
 
-        private readonly IWebHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment; //for receiving img from user and upload on localstorage.
 
         private readonly ILogger<HomeController> _logger;
 
@@ -80,18 +80,33 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryViewModel ViewCategory)
+        public IActionResult Create(CategoryViewModel viewCategory)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(ViewCategory.BrowserImage != null)
+                CategoryModel category = new CategoryModel();
+
+                if(viewCategory.BrowserImage != null)
                 {
-                    var uploadsFolder = Path.Combine(_environment.WebRootPath,"images");
-                    var fileName = ViewCategory.BrowserImage.FileName;
+                    var fileName = viewCategory.BrowserImage.FileName;
+                    var filePath = Path.Combine(_environment.WebRootPath, "images");
+                    var fileUploads = Path.Combine(filePath, fileName);
 
-                    var filePath = Path.Combine(uploadsFolder, fileName);
+                    using(var stream = new FileStream(fileUploads, FileMode.Create))
+                    {
+                        viewCategory.BrowserImage.CopyTo(stream);
+                    };
+
+                    category.CategoryName = viewCategory.CategoryName;
+                    category.Description = viewCategory.Description;
+                    category.Image = fileName;
                 }
-
+                else
+                {
+                    category.CategoryName = viewCategory.CategoryName;
+                    category.Description = viewCategory.Description;
+                    category.Image = "default.jpg";
+                }
 
                 _context.Category.Add(category);
                 _context.SaveChanges();
@@ -99,7 +114,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(category);
+            return View(viewCategory);
         }
 
         //Edit
