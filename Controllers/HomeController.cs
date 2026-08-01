@@ -122,27 +122,69 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Edit(int id)
         {
 
-            CategoryModel? categoryedit = _context.Category.Find(id);
+            CategoryModel? category = _context.Category.Find(id);
 
-            if(categoryedit == null)
+            if(category == null)
             {
                 return NotFound();
             }
 
-            return View(categoryedit);
+            CategoryViewModel viewCategory = new CategoryViewModel();
+
+            viewCategory.CategoryId = category.CategoryId;
+            viewCategory.CategoryName = category.CategoryName;
+            viewCategory.Description = category.Description;
+            viewCategory.ExistingImage = category.Image;
+
+            return View(viewCategory);
         }
 
         [HttpPost]
-        public IActionResult Edit(CategoryModel category)
+        public IActionResult Edit(CategoryViewModel viewCategory)
         {
             if (ModelState.IsValid)
             {
-                _context.Category.Update(category);
+                CategoryModel? category =  _context.Category.Find(viewCategory.CategoryId);
+                if(category == null)
+                {
+                    return NotFound();
+                }
 
+                if(viewCategory.BrowserImage != null)
+                {
+                    var fileName = viewCategory.BrowserImage.FileName;
+                    var filePath = Path.Combine(_environment.WebRootPath , "images");
+                    var fileUpload = Path.Combine(filePath,fileName);
+
+                    using(var stream = new FileStream( fileUpload, FileMode.Create))
+                    {
+                        viewCategory.BrowserImage.CopyTo(stream);
+                    }
+
+                    category.Image = fileName;
+
+                    //var ExitsingImgPath = Path.Combine(filePath, viewCategory.ExistingImage);
+
+                }
+                else
+                {
+                    category.Image = viewCategory.ExistingImage;
+                }
+                category.CategoryName = viewCategory.CategoryName;
+                category.Description = viewCategory.Description;
+
+                _context.Category.Update(category);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+
+                var ExitsingImgPath = Path.Combine(_environment.WebRootPath, "images", viewCategory.ExistingImage);
+
+                if (System.IO.File.Exists(ExitsingImgPath))
+                {
+                    System.IO.File.Delete(ExitsingImgPath);
+                }
+
             }
-            return View(category);
+            return View(viewCategory);
         }
 
 

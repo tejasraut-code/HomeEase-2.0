@@ -14,5 +14,7 @@ namespace HomeEase_2._0_MVC.Models.ViewModels
         [MaxLength(300)]
         public string Description { get; set; } = string.Empty;
         public IFormFile? BrowserImage { get; set; }
+
+        public string? ExistingImage { get; set; }
     }
 }
