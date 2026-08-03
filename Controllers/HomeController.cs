@@ -144,6 +144,9 @@ namespace HomeEase_2._0_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                string? existingImgPath = null;
+                string? fileName = null;
+
                 CategoryModel? category =  _context.Category.Find(viewCategory.CategoryId);
                 if(category == null)
                 {
@@ -152,19 +155,18 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if(viewCategory.BrowserImage != null)
                 {
-                    var fileName = viewCategory.BrowserImage.FileName;
+                    fileName = viewCategory.BrowserImage.FileName;
                     var filePath = Path.Combine(_environment.WebRootPath , "images");
                     var fileUpload = Path.Combine(filePath,fileName);
 
-                    using(var stream = new FileStream( fileUpload, FileMode.Create))
+                    existingImgPath = Path.Combine(filePath, viewCategory.ExistingImage);
+
+                    using (var stream = new FileStream( fileUpload, FileMode.Create))
                     {
                         viewCategory.BrowserImage.CopyTo(stream);
                     }
 
                     category.Image = fileName;
-
-                    //var ExitsingImgPath = Path.Combine(filePath, viewCategory.ExistingImage);
-
                 }
                 else
                 {
@@ -176,12 +178,14 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Category.Update(category);
                 _context.SaveChanges();
 
-                var ExitsingImgPath = Path.Combine(_environment.WebRootPath, "images", viewCategory.ExistingImage);
+                //var ExitsingImgPath = Path.Combine(_environment.WebRootPath, "images", viewCategory.ExistingImage);
 
-                if (System.IO.File.Exists(ExitsingImgPath))
+                if (fileName != null && existingImgPath!=null && System.IO.File.Exists(existingImgPath) && viewCategory.ExistingImage != fileName)
                 {
-                    System.IO.File.Delete(ExitsingImgPath);
+                    System.IO.File.Delete(existingImgPath);
                 }
+
+                return RedirectToAction("Index");
 
             }
             return View(viewCategory);
@@ -192,16 +196,43 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            CategoryModel delCategory = _context.Category.Find(id);
+        //    CategoryModel? category = _context.Category.Find(id);
+        //    CategoryViewModel viewCategory = new CategoryViewModel();
+            
+        //    if(category == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else { viewCategory.ExistingImage = category.Image; }
 
-            if(delCategory == null)
+        //    var filePath = Path.Combine(_environment.WebRootPath, "images");
+        //    var fileDeletePath = Path.Combine(filePath, viewCategory.ExistingImage);
+
+        //    if (System.IO.File.Exists(fileDeletePath))
+        //    {
+        //        System.IO.File.Delete(fileDeletePath);
+        //    }
+        //    _context.Category.Remove(category);
+        //    _context.SaveChanges();
+
+        //    return RedirectToAction("Index");
+
+            CategoryModel? category = _context.Category.Find(id);
+
+            if (category == null)
             {
                 return NotFound();
             }
+            var filePath = Path.Combine(_environment.WebRootPath, "images");
+            var fileDeletePath = Path.Combine(filePath, category.Image);
 
-            _context.Category.Remove(delCategory);
+            _context.Category.Remove(category);
             _context.SaveChanges();
 
+            if (System.IO.File.Exists(fileDeletePath))
+            {
+                System.IO.File.Delete(fileDeletePath);
+            }
             return RedirectToAction("Index");
         }
 
