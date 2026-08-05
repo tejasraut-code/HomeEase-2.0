@@ -23,6 +23,19 @@ namespace HomeEase_2._0_MVC.Controllers
             _environment = environment;
         }
 
+        private string UploadImage(IFormFile browserImage)
+        {
+            var fileName = browserImage.FileName;
+            var folderPath = Path.Combine(_environment.WebRootPath, "images");
+            var fileUploadPath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(fileUploadPath, FileMode.Create))
+            {
+                browserImage.CopyTo(stream);
+            }
+            return fileName;
+        }
+
       
         public IActionResult Index()
         {
@@ -196,27 +209,6 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-        //    CategoryModel? category = _context.Category.Find(id);
-        //    CategoryViewModel viewCategory = new CategoryViewModel();
-            
-        //    if(category == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    else { viewCategory.ExistingImage = category.Image; }
-
-        //    var filePath = Path.Combine(_environment.WebRootPath, "images");
-        //    var fileDeletePath = Path.Combine(filePath, viewCategory.ExistingImage);
-
-        //    if (System.IO.File.Exists(fileDeletePath))
-        //    {
-        //        System.IO.File.Delete(fileDeletePath);
-        //    }
-        //    _context.Category.Remove(category);
-        //    _context.SaveChanges();
-
-        //    return RedirectToAction("Index");
-
             CategoryModel? category = _context.Category.Find(id);
 
             if (category == null)
