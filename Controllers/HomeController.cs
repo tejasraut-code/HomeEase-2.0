@@ -23,65 +23,10 @@ namespace HomeEase_2._0_MVC.Controllers
             _environment = environment;
         }
 
-        private string UploadImage(IFormFile browserImage)
-        {
-            var fileName = browserImage.FileName;
-            var folderPath = Path.Combine(_environment.WebRootPath, "images");
-            var fileUploadPath = Path.Combine(folderPath, fileName);
-
-            using (var stream = new FileStream(fileUploadPath, FileMode.Create))
-            {
-                browserImage.CopyTo(stream);
-            }
-            return fileName;
-        }
-
-      
         public IActionResult Index()
         {
 
             List<CategoryModel> categories = _context.Category.ToList();
-
-            //    List<CategoriesModels> categories = new()
-            //{
-            //    new CategoriesModels
-            //    {
-            //        CategoriesId = 1,
-            //        CategoriesName="Plumber",
-            //        Description="Expert Plumbing services for home and offices.",
-            //        Images="Plumber.jpg",
-            //    },
-
-            //    new CategoriesModels
-            //    {
-            //        CategoriesId=2,
-            //        CategoriesName="Cleaning",
-            //        Description="Home and Office Cleaning",
-            //        Images="Cleaner.jpg",
-            //    },
-            //    new CategoriesModels
-            //    {
-            //        CategoriesId = 3,
-            //        CategoriesName="Electrician",
-            //        Description="Safe Electricity Repairs",
-            //        Images="Electrician.jpg",
-            //    },
-
-            //    new CategoriesModels
-            //    {
-            //        CategoriesId=4,
-            //        CategoriesName="Painting",
-            //        Description="Interior and Exterior Painting",
-            //        Images="Painter.jpg",
-            //    },
-            //    new CategoriesModels
-            //    {
-            //        CategoriesId=5,
-            //        CategoriesName="Carpenter",
-            //        Description="furntiure repair &  woodwork",
-            //        Images="Carpenter.jpg"
-            //    }
-            //};
 
             return View(categories);
         }
@@ -101,14 +46,16 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if(viewCategory.BrowserImage != null)
                 {
-                    var fileName = viewCategory.BrowserImage.FileName;
-                    var filePath = Path.Combine(_environment.WebRootPath, "images");
-                    var fileUploads = Path.Combine(filePath, fileName);
+                    //var fileName = viewCategory.BrowserImage.FileName;
+                    //var filePath = Path.Combine(_environment.WebRootPath, "images");
+                    //var fileUploads = Path.Combine(filePath, fileName);
 
-                    using(var stream = new FileStream(fileUploads, FileMode.Create))
-                    {
-                        viewCategory.BrowserImage.CopyTo(stream);
-                    };
+                    //using(var stream = new FileStream(fileUploads, FileMode.Create))
+                    //{
+                    //    viewCategory.BrowserImage.CopyTo(stream);
+                    //};
+
+                    var fileName =  UploadImage(viewCategory.BrowserImage);
 
                     category.CategoryName = viewCategory.CategoryName;
                     category.Description = viewCategory.Description;
@@ -134,7 +81,6 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-
             CategoryModel? category = _context.Category.Find(id);
 
             if(category == null)
@@ -168,18 +114,9 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if(viewCategory.BrowserImage != null)
                 {
-                    fileName = viewCategory.BrowserImage.FileName;
-                    var filePath = Path.Combine(_environment.WebRootPath , "images");
-                    var fileUpload = Path.Combine(filePath,fileName);
-
-                    existingImgPath = Path.Combine(filePath, viewCategory.ExistingImage);
-
-                    using (var stream = new FileStream( fileUpload, FileMode.Create))
-                    {
-                        viewCategory.BrowserImage.CopyTo(stream);
-                    }
-
+                    fileName = UploadImage(viewCategory.BrowserImage);
                     category.Image = fileName;
+                    existingImgPath = Path.Combine(_environment.WebRootPath, "images", viewCategory.ExistingImage);
                 }
                 else
                 {
@@ -191,11 +128,11 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Category.Update(category);
                 _context.SaveChanges();
 
-                //var ExitsingImgPath = Path.Combine(_environment.WebRootPath, "images", viewCategory.ExistingImage);
+                 
 
                 if (fileName != null && existingImgPath!=null && System.IO.File.Exists(existingImgPath) && viewCategory.ExistingImage != fileName)
                 {
-                    System.IO.File.Delete(existingImgPath);
+                    DeleteImage(viewCategory.ExistingImage);
                 }
 
                 return RedirectToAction("Index");
@@ -215,16 +152,12 @@ namespace HomeEase_2._0_MVC.Controllers
             {
                 return NotFound();
             }
-            var filePath = Path.Combine(_environment.WebRootPath, "images");
-            var fileDeletePath = Path.Combine(filePath, category.Image);
 
             _context.Category.Remove(category);
             _context.SaveChanges();
 
-            if (System.IO.File.Exists(fileDeletePath))
-            {
-                System.IO.File.Delete(fileDeletePath);
-            }
+            DeleteImage(category.Image);
+
             return RedirectToAction("Index");
         }
 
@@ -238,6 +171,32 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+
+        private string UploadImage(IFormFile browserImage)
+        {
+            var fileName = browserImage.FileName;
+            var folderPath = Path.Combine(_environment.WebRootPath, "images");
+            var fileUploadPath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(fileUploadPath, FileMode.Create))
+            {
+                browserImage.CopyTo(stream);
+            }
+            return fileName;
+        }
+
+        private void DeleteImage(string imageName)
+        {
+            var folderPath = Path.Combine(_environment.WebRootPath, "images");
+            var FileDeletePath = Path.Combine(folderPath, imageName);
+
+            if (System.IO.File.Exists(FileDeletePath))
+            {
+                System.IO.File.Delete(FileDeletePath);
+            }
         }
     }
 }
