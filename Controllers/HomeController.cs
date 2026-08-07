@@ -57,17 +57,15 @@ namespace HomeEase_2._0_MVC.Controllers
 
                     var fileName =  UploadImage(viewCategory.BrowserImage);
 
-                    category.CategoryName = viewCategory.CategoryName;
-                    category.Description = viewCategory.Description;
                     category.Image = fileName;
                 }
                 else
                 {
-                    category.CategoryName = viewCategory.CategoryName;
-                    category.Description = viewCategory.Description;
                     category.Image = "default.jpg";
                 }
 
+                category.CategoryName = viewCategory.CategoryName;
+                category.Description = viewCategory.Description;
                 _context.Category.Add(category);
                 _context.SaveChanges();
 
@@ -191,11 +189,11 @@ namespace HomeEase_2._0_MVC.Controllers
         private void DeleteImage(string imageName)
         {
             var folderPath = Path.Combine(_environment.WebRootPath, "images");
-            var FileDeletePath = Path.Combine(folderPath, imageName);
+            var fileDeletePath = Path.Combine(folderPath, imageName);
 
-            if (System.IO.File.Exists(FileDeletePath))
+            if (System.IO.File.Exists(fileDeletePath))
             {
-                System.IO.File.Delete(FileDeletePath);
+                System.IO.File.Delete(fileDeletePath);
             }
         }
     }
