@@ -6,6 +6,7 @@ namespace HomeEase_2._0_MVC.Data
     public class AppDbContext : DbContext
     {
         public DbSet<CategoryModel> Category { get; set; }
+        public DbSet<ServiceModel> Services { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 

@@ -4,11 +4,9 @@ wwwroot\images\Carpenter.jpg
 wwwroot\images\Cleaner.jpg
 wwwroot\images\Electrician.jpg
 wwwroot\images\images.jpg
-wwwroot\images\laptop.jpeg
 wwwroot\images\Painter.jpg
 wwwroot\images\Plumber.jpg
 wwwroot\images\sofa.jpg
-wwwroot\images\tv.jpeg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

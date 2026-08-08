@@ -126,8 +126,6 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Category.Update(category);
                 _context.SaveChanges();
 
-                 
-
                 if (fileName != null && existingImgPath!=null && System.IO.File.Exists(existingImgPath) && viewCategory.ExistingImage != fileName)
                 {
                     DeleteImage(viewCategory.ExistingImage);

@@ -2,7 +2,7 @@
 
 namespace HomeEase_2._0_MVC.Models.DomainModels
 {
-    public class CategoryModel
+    public class CategoryModel 
     {
         [Key] //primary key
         public int CategoryId { get; set; }
@@ -16,5 +16,7 @@ namespace HomeEase_2._0_MVC.Models.DomainModels
 
         [MaxLength(200)]
         public string Image { get; set; } = string.Empty;
+
+        public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
     }
 }
