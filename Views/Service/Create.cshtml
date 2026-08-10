@@ -1,0 +1,75 @@
+﻿@model HomeEase_2._0_MVC.Models.ViewModels.ServiceViewModel
+
+<form method="post" asp-action="Service" enctype="multipart/form-data">
+    <div class="container m-3">
+
+        <h2>Create New Service</h2>
+        <br />
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="ServiceName">Service Name:</label>
+            <input class="form-control" asp-for="ServiceName" />
+            <span class="text-danger" asp-validation-for="ServiceName"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="Description">Description:</label>
+            <textarea class="form-control" asp-for="Description"></textarea>
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="CategoryId">Categories:</label>
+            <select class="form-control" asp-for="CategoryId" asp-items="Model.CategoryOptions"></select>
+            <span class="text-danger" asp-validation-for="CategoryId"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="Price">Price:</label>
+            <input class="form-control" asp-for="Price" type="number" step="0.01"/>
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" >Estimated Duration:</label>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label" asp-for="DurationDays">Days</label>
+                    <input class="form-control" type="number" asp-for="DurationDays" min="0" max="365" />
+                    <span class="text-danger" asp-validation-for="DurationDays"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" asp-for="DurationHours">Hours</label>
+                    <input class="form-control" type="number" asp-for="DurationHours" min="0" max="23"/>
+                    <span class="text-danger" asp-validation-for="DurationHours"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" asp-for="DurationMinutes">Minutes</label>
+                    <input class="form-control" type="number" asp-for="DurationMinutes" min="0" max="59" />
+                    <span class="text-danger" asp-validation-for="DurationMinutes"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="RequiredSiteVisit">Request Site Visit:</label>
+            <input class="form-check-input" asp-for="RequiredSiteVisit" type="checkbox"/>
+            <span class="text-danger" asp-validation-for="RequiredSiteVisit"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="DurationNote">Duration Note:</label>
+            <textarea asp-for="DurationNote" class="form-control"></textarea>
+            <span class="text-danger" asp-validation-for="DurationNote"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="BrowserImage">Upload Images</label>
+            <input class="form-control" type="file" asp-for="BrowserImage" accept="image/*"/>
+            <span class="text-danger" asp-validation-for="BrowserImage"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Service</button>
+
+    </div>
+</form>

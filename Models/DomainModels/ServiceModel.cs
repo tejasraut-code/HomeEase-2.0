@@ -21,7 +21,10 @@ namespace HomeEase_2._0_MVC.Models.DomainModels
         [Required]
         public decimal Price { get; set; }
 
-        public TimeSpan ApproximateTime { get; set; }
+        //public TimeSpan ApproximateTime { get; set; }
+        public int? EstimatedDurationMinutes { get; set; }
+        public bool RequiredSiteVisit { get; set; }
+        public  string? DurationNote { get; set; }
 
         public string Image { get; set; } = string.Empty;
     }

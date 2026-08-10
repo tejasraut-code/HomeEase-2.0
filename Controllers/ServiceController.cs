@@ -26,11 +26,12 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Create()
         {
             ServiceViewModel viewService = new ServiceViewModel();
-            viewService.Categories = _context.Category.ToList();
 
-            SelectList categoryList = new SelectList(viewService.Categories,"CategoryId","CategoryName");
-                
+            List<CategoryModel> categories = _context.Category.ToList();
+            viewService.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
+
             return View(viewService);
         }
+
     }
 }
