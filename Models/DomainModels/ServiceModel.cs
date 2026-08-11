@@ -26,6 +26,6 @@ namespace HomeEase_2._0_MVC.Models.DomainModels
         public bool RequiredSiteVisit { get; set; }
         public  string? DurationNote { get; set; }
 
-        public string Image { get; set; } = string.Empty;
+        public string? Image { get; set; } 
     }
 }
