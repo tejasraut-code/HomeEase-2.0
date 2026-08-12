@@ -17,8 +17,22 @@ namespace HomeEase_2._0_MVC.Controllers
             _environment = environment;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
+            List<ServiceModel> serviceViews = _context.Services.ToList();
+
+            foreach( var service in serviceViews)
+            {
+                ServiceIndexViewModel serviceIndexView = new ServiceIndexViewModel();
+                serviceIndexView.ServiceId = service.ServiceId;
+                serviceIndexView.ServiceName = service.ServiceName;
+                serviceIndexView.Description = service.Description;
+                serviceIndexView.Price = service.Price;
+                serviceIndexView.ExistingImage = service.Image;
+                serviceIndexView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
+            }
+
             return View();
         }
 
@@ -59,7 +73,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 Service.Description = viewService.Description;
                 Service.ServiceName = viewService.ServiceName.Trim();
                 Service.Price = viewService.Price;
-                Service.EstimatedDurationMinutes = DurationToMinutesCal(viewService.DurationDays, viewService.DurationHours, viewService.DurationMinutes);
+                Service.EstimatedDurationMinutes = DurationToMinutes(viewService.DurationDays, viewService.DurationHours, viewService.DurationMinutes);
                 Service.RequiredSiteVisit = viewService.RequiredSiteVisit;
                 Service.DurationNote = viewService.DurationNote;
 
@@ -82,11 +96,35 @@ namespace HomeEase_2._0_MVC.Controllers
             return View(viewService);
         }
 
-        private int DurationToMinutesCal(int Days,int Hours, int Minutes)
+        private int DurationToMinutes(int Days,int Hours, int Minutes)
         {
             int DurationInMinutes = ( Days*1440)+(Hours*60)+(Minutes*1);
             return DurationInMinutes;
         }
+
+        private DurationViewModel MinutesToDuration(int? time)
+        {
+            DurationViewModel Duration = new DurationViewModel();
+
+            if (time == null)
+            {
+                return Duration;
+            }
+
+            int totalMinutes = time.Value;
+
+            int Days = totalMinutes / 1440;
+            int remainingTime = totalMinutes % 1440;
+
+            int Hours = remainingTime / 60;
+            int Minutes = remainingTime % 60;
+
+            Duration.Days = Days;
+            Duration.Hours = Hours;
+            Duration.Minutes = Minutes;
+
+            return Duration ;
+        } 
         private string UploadImage(IFormFile BrowserImage)
         {
             var fileName = BrowserImage.FileName ;
