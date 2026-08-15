@@ -28,9 +28,9 @@ namespace HomeEase_2._0_MVC.Models.ViewModels
 
 
         public IFormFile? BrowserImage { get; set; } 
-        public string ExistingImage { get; set; } = string.Empty;
-
-        //public List<CategoryModel> Categories { get; set; } = new List<CategoryModel>();
+        public string? ExistingImage { get; set; } = string.Empty;
         public SelectList? CategoryOptions { get; set; }
+
+        public DurationViewModel DurationView { get; set; } = new DurationViewModel();
     }
 }

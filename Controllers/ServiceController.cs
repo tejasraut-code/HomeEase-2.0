@@ -21,6 +21,7 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Index()
         {
             List<ServiceModel> serviceViews = _context.Services.ToList();
+            List<ServiceIndexViewModel> serviceIndexViewsList = new List<ServiceIndexViewModel>();
 
             foreach( var service in serviceViews)
             {
@@ -31,9 +32,11 @@ namespace HomeEase_2._0_MVC.Controllers
                 serviceIndexView.Price = service.Price;
                 serviceIndexView.ExistingImage = service.Image;
                 serviceIndexView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
+
+                serviceIndexViewsList.Add(serviceIndexView);
             }
 
-            return View();
+            return View(serviceIndexViewsList);
         }
 
         [HttpGet]
@@ -67,7 +70,9 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if(category == null)
                 {
-                    return NotFound(viewService);
+                    //return NotFound(viewService);\
+                    ModelState.AddModelError(nameof(viewService.CategoryId), "Please select a valid category.");
+                    return View(viewService);
                 }
                 Service.CategoryId = viewService.CategoryId;
                 Service.Description = viewService.Description;
@@ -90,10 +95,100 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Services.Add(Service);
                 _context.SaveChanges();
 
-                return RedirectToAction("Create");
+                return RedirectToAction("Index");
             }
 
             return View(viewService);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            ServiceModel? service = _context.Services.Find(id);
+            ServiceViewModel serviceView = new ServiceViewModel();
+            List<CategoryModel> categories = new List<CategoryModel>();
+            categories = _context.Category.ToList();
+            if (service == null)
+            {
+                return NotFound();
+            }
+            serviceView.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
+
+            serviceView.ServiceId = service.ServiceId;
+            serviceView.CategoryId = service.CategoryId;
+            serviceView.ServiceName = service.ServiceName;
+            serviceView.Description = service.Description;
+            serviceView.Price = service.Price;
+            serviceView.RequiredSiteVisit = service.RequiredSiteVisit;
+            serviceView.DurationNote = service.DurationNote;
+            serviceView.ExistingImage = service.Image;
+            serviceView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
+
+            return View(serviceView);
+        }
+
+        //closed at 06:31pm
+
+        [HttpPost]
+        public IActionResult Edit(ServiceViewModel serviceView)
+        {
+            if (ModelState.IsValid)
+            {
+                ServiceModel? service = _context.Services.Find(serviceView.ServiceId);
+                CategoryModel? category = _context.Category.Find(serviceView.CategoryId);
+
+                string serviceName = serviceView.ServiceName.Trim().ToLower();
+                bool serviceCheck = _context.Services.Any(x => x.ServiceName.ToLower() == serviceName && x.ServiceId == serviceView.ServiceId);
+                if (service == null)
+                {
+                    return NotFound();
+                }
+                if (category == null)
+                {
+                    ModelState.AddModelError(nameof(serviceView.CategoryId), "Please Select a Valid Category");
+                    return View(serviceView);
+                }
+                if(serviceCheck)
+                {
+                    ModelState.AddModelError(nameof(serviceView.ServiceName), "Service Name Already Present");
+                    return View(serviceView);
+                }
+
+                service.CategoryId = serviceView.CategoryId;
+                service.ServiceId = serviceView.ServiceId;
+                service.ServiceName = serviceView.ServiceName;
+                service.Description = serviceView.Description;
+                service.Price = serviceView.Price;
+                service.EstimatedDurationMinutes = DurationToMinutes(serviceView.DurationDays, serviceView.DurationHours, serviceView.DurationMinutes);
+                service.RequiredSiteVisit = serviceView.RequiredSiteVisit;
+                service.DurationNote = serviceView.DurationNote;
+
+                if(serviceView.BrowserImage != null)
+                {
+                    //var fileName = serviceView.BrowserImage.FileName;
+                    //var folderPath = Path.Combine(_environment.WebRootPath, "images");
+                    //var fileUploadPath = Path.Combine(folderPath, fileName);
+
+                    //using(var stream = new FileStream(fileUploadPath, FileMode.Create))
+                    //{
+                    //    serviceView.BrowserImage.CopyTo(stream);
+                    //} i actually forget that i had a method name uploadimg.
+
+                    string imgName =  UploadImage(serviceView.BrowserImage);
+                    service.Image = imgName;
+
+                    DeleteImage(serviceView.ExistingImage);
+
+                }
+                else
+                {
+                    service.Image = serviceView.ExistingImage;
+                }
+
+                _context.Services.Update(service);
+                _context.SaveChanges();
+            }
+            return View(serviceView);
         }
 
         private int DurationToMinutes(int Days,int Hours, int Minutes)
@@ -137,6 +232,23 @@ namespace HomeEase_2._0_MVC.Controllers
             }
             return fileName;
         } 
+
+
+        private void DeleteImage(string? fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            var folderPath = Path.Combine(_environment.WebRootPath, "images");
+            var fileUploadPath = Path.Combine(folderPath, fileName);
+
+            if (System.IO.File.Exists(fileUploadPath))
+            {
+                System.IO.File.Delete(fileUploadPath);
+            }
+        }
 
     }
 }
