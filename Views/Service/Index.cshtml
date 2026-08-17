@@ -5,7 +5,7 @@
 
  <div class="container">
         <h2 class="h2 text-center"> Book A Service </h2>
-        <a class="btn btn-outline-primary" href="~/Service/Create">Create a New Service.</a>
+        <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
         <div class="row">
 
             @foreach(var item in Model)
@@ -33,10 +33,12 @@
                         <p class="card-text">@item.Description</p>
                         <p class="card-text"><b>Rs.</b>@item.Price/-</p>
                         <p class="card-text">Estimated Time Required <br /> Days:@item.DurationView.Days  Hours:@item.DurationView.Hours    Minutes:@item.DurationView.Minutes </p>
-
+                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ServiceId">Book an Appoinment</a>
+                        <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-outline-warning">Edit</a>
                         @* <button class="btn btn-primary">Book an Appoinment</button> *@
-                        <a href="#" class="btn btn-info" asp-action="Edit" asp-route="@item.ServiceId">Book an Appoinment</a>
-                        <a href="" class="btn btn-outline-warning">Edit</a>
+                        @* <form asp-controller="Service"  method="post">
+                           
+                        </form> *@
                     </div>
                 </div>
             </div>

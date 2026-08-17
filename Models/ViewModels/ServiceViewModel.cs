@@ -19,12 +19,11 @@ namespace HomeEase_2._0_MVC.Models.ViewModels
         //public TimeSpan ApproximateTime { get; set; }
 
         public int? EstimatedDurationMinutes { get; set; }
-        public int DurationDays { get; set; }
-        public int DurationHours { get; set; }
-        public int DurationMinutes { get; set; }
+        //public int DurationDays { get; set; }
+        //public int DurationHours { get; set; }
+        //public int DurationMinutes { get; set; }
         public bool RequiredSiteVisit { get; set; }
         public string? DurationNote { get; set; }
-
 
 
         public IFormFile? BrowserImage { get; set; } 

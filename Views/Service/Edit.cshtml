@@ -1,5 +1,70 @@
 ﻿@model ServiceViewModel
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    
+<form asp-controller="Service" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="container">
+        <h2>Edit Services @Model.ServiceName</h2>
+
+        <div>
+            <input type="hidden" asp-for="ServiceId" />
+            @* <input type="hidden" asp-for="CategoryId" /> *@
+            <input type="hidden" asp-for="ExistingImage" />
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" asp-for="ServiceName">Service Name:</label>
+            <input class="form-control" asp-for="ServiceName" />
+            <span class="text-danger" asp-validation-for="ServiceName"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="CategoryId">Categories:</label>
+            <select class="form-control" asp-for="CategoryId" asp-items="Model.CategoryOptions" ></select>
+            <span class="text-danger" asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Description">Description:</label>
+            <textarea class="form-control" asp-for="Description"></textarea>
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Price">Price:</label>
+            <input class="form-control" asp-for="Price" />
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+        <div class="row mb-3">
+            <label class="form-label">Estimated Duration Time</label>
+            <div class="col-md-4">
+                <label class="form-label" asp-for="DurationView.Days">Days:</label>
+                <input class="form-control" type="number" asp-for="DurationView.Days" min="0" max="365" />
+                <span class="text-danger" asp-validation-for="DurationView.Days"></span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" asp-for="DurationView.Hours">Hours:</label>
+                <input class="form-control" type="number" asp-for="DurationView.Hours" min="0" max="23" />
+                <span class="text-danger" asp-validation-for="DurationView.Hours"></span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" asp-for="DurationView.Minutes">Minutes:</label>
+                <input class="form-control" type="number" asp-for="DurationView.Minutes" min="0" max="59" />
+                <span class="text-danger" asp-validation-for="DurationView.Minutes"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="RequiredSiteVisit">Required Site Visit:</label>
+            <input class="form-check-input" asp-for="RequiredSiteVisit" type="checkbox" />
+            <span class="text-danger" asp-validation-for="RequiredSiteVisit"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="DurationNote">Duration Note:</label>
+            <textarea class="form-control" asp-for="DurationNote"></textarea>
+            <span class="text-danger" asp-validation-for="DurationNote"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="BrowserImage">Image Upload:</label>
+            <input class="form-control" asp-for="BrowserImage" type="file" placeholder="@Model.ExistingImage"/> 
+            @* we will used placeholder only if image name is simple not with random letters and number. can be removed or modified later on UI polishing. *@
+            <span class="text-danger" asp-validation-for="BrowserImage"></span>
+        </div>
+        <button type="submit" class="btn btn-info">Update Service</button>
+
+    </div>
 </form>

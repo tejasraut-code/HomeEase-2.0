@@ -34,19 +34,19 @@
             <label class="form-label" >Estimated Duration:</label>
             <div class="row">
                 <div class="col-md-4">
-                    <label class="form-label" asp-for="DurationDays">Days</label>
-                    <input class="form-control" type="number" asp-for="DurationDays" min="0" max="365" />
-                    <span class="text-danger" asp-validation-for="DurationDays"></span>
+                    <label class="form-label" asp-for="DurationView.Days">Days</label>
+                    <input class="form-control" type="number" asp-for="DurationView.Days" min="0" max="365" />
+                    <span class="text-danger" asp-validation-for="DurationView.Days"></span>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label" asp-for="DurationHours">Hours</label>
-                    <input class="form-control" type="number" asp-for="DurationHours" min="0" max="23"/>
-                    <span class="text-danger" asp-validation-for="DurationHours"></span>
+                    <label class="form-label" asp-for="DurationView.Hours">Hours</label>
+                    <input class="form-control" type="number" asp-for="DurationView.Hours" min="0" max="23" />
+                    <span class="text-danger" asp-validation-for="DurationView.Hours"></span>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label" asp-for="DurationMinutes">Minutes</label>
-                    <input class="form-control" type="number" asp-for="DurationMinutes" min="0" max="59" />
-                    <span class="text-danger" asp-validation-for="DurationMinutes"></span>
+                    <label class="form-label" asp-for="DurationView.Minutes">Minutes</label>
+                    <input class="form-control" type="number" asp-for="DurationView.Minutes" min="0" max="59" />
+                    <span class="text-danger" asp-validation-for="DurationView.Minutes"></span>
                 </div>
             </div>
         </div>

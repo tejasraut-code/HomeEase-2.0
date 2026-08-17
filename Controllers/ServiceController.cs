@@ -52,6 +52,9 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Create(ServiceViewModel viewService)
         {
+            List<CategoryModel> categories = _context.Category.ToList();
+            viewService.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
+
             if (ModelState.IsValid)
             {
                 ServiceModel Service = new ServiceModel();
@@ -64,7 +67,8 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if(serviceNamePresent)
                 {
-                    ViewBag.ErrorMessage = "Service Name Already Present.";
+                    //ViewBag.ErrorMessage = "Service Name Already Present.";
+                    ModelState.AddModelError(nameof(viewService.ServiceName), "Service Name Already Present. ");
                     return View(viewService);
                 }
 
@@ -78,7 +82,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 Service.Description = viewService.Description;
                 Service.ServiceName = viewService.ServiceName.Trim();
                 Service.Price = viewService.Price;
-                Service.EstimatedDurationMinutes = DurationToMinutes(viewService.DurationDays, viewService.DurationHours, viewService.DurationMinutes);
+                Service.EstimatedDurationMinutes = DurationToMinutes(viewService.DurationView.Days, viewService.DurationView.Hours, viewService.DurationView.Minutes);
                 Service.RequiredSiteVisit = viewService.RequiredSiteVisit;
                 Service.DurationNote = viewService.DurationNote;
 
@@ -127,19 +131,20 @@ namespace HomeEase_2._0_MVC.Controllers
             return View(serviceView);
         }
 
-        //closed at 06:31pm
 
         [HttpPost]
         public IActionResult Edit(ServiceViewModel serviceView)
         {
+            List<CategoryModel> categories = _context.Category.ToList();
+            serviceView.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
             if (ModelState.IsValid)
             {
                 ServiceModel? service = _context.Services.Find(serviceView.ServiceId);
                 CategoryModel? category = _context.Category.Find(serviceView.CategoryId);
 
                 string serviceName = serviceView.ServiceName.Trim().ToLower();
-                bool serviceCheck = _context.Services.Any(x => x.ServiceName.ToLower() == serviceName && x.ServiceId == serviceView.ServiceId);
-                if (service == null)
+                bool serviceCheck = _context.Services.Any(x => x.ServiceName.ToLower() == serviceName && x.ServiceId != serviceView.ServiceId && x.CategoryId == serviceView.CategoryId);
+                if (service == null)    
                 {
                     return NotFound();
                 }
@@ -159,34 +164,29 @@ namespace HomeEase_2._0_MVC.Controllers
                 service.ServiceName = serviceView.ServiceName;
                 service.Description = serviceView.Description;
                 service.Price = serviceView.Price;
-                service.EstimatedDurationMinutes = DurationToMinutes(serviceView.DurationDays, serviceView.DurationHours, serviceView.DurationMinutes);
+                service.EstimatedDurationMinutes = DurationToMinutes(serviceView.DurationView.Days, serviceView.DurationView.Hours, serviceView.DurationView.Minutes);
                 service.RequiredSiteVisit = serviceView.RequiredSiteVisit;
                 service.DurationNote = serviceView.DurationNote;
 
-                if(serviceView.BrowserImage != null)
-                {
-                    //var fileName = serviceView.BrowserImage.FileName;
-                    //var folderPath = Path.Combine(_environment.WebRootPath, "images");
-                    //var fileUploadPath = Path.Combine(folderPath, fileName);
-
-                    //using(var stream = new FileStream(fileUploadPath, FileMode.Create))
-                    //{
-                    //    serviceView.BrowserImage.CopyTo(stream);
-                    //} i actually forget that i had a method name uploadimg.
-
-                    string imgName =  UploadImage(serviceView.BrowserImage);
-                    service.Image = imgName;
-
-                    DeleteImage(serviceView.ExistingImage);
-
-                }
+                    if(serviceView.BrowserImage != null)
+                    {
+                        string imgName =  UploadImage(serviceView.BrowserImage);
+                        
+                        if (!string.IsNullOrEmpty(imgName))
+                        {
+                        service.Image = imgName;
+                        DeleteImage(serviceView.ExistingImage);
+                        }
+                    }
                 else
                 {
                     service.Image = serviceView.ExistingImage;
                 }
 
-                _context.Services.Update(service);
+                //_context.Services.Update(service);
                 _context.SaveChanges();
+
+                return RedirectToAction("Index");
             }
             return View(serviceView);
         }
@@ -232,7 +232,6 @@ namespace HomeEase_2._0_MVC.Controllers
             }
             return fileName;
         } 
-
 
         private void DeleteImage(string? fileName)
         {
