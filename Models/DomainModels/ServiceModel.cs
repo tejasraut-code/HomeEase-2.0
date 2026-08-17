@@ -8,7 +8,7 @@ namespace HomeEase_2._0_MVC.Models.DomainModels
         public int ServiceId { get; set; }
 
         public int CategoryId { get; set; }
-        public CategoryModel Category { get; set; } = new CategoryModel();
+        public CategoryModel? Category { get; set; }
 
         [Required]
         [MaxLength(100)]
