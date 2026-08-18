@@ -20,7 +20,8 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<ServiceModel> serviceViews = _context.Services.ToList();
+            //List<ServiceModel> serviceViews = _context.Services.ToList();
+            List<ServiceModel> serviceViews = _context.Services.Include(x => x.Category).ToList();
             List<ServiceIndexViewModel> serviceIndexViewsList = new List<ServiceIndexViewModel>();
 
             foreach( var service in serviceViews)
@@ -33,9 +34,10 @@ namespace HomeEase_2._0_MVC.Controllers
                 serviceIndexView.ExistingImage = service.Image;
                 serviceIndexView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
 
+                serviceIndexView.CategoryName = service.Category?.CategoryName;
+
                 serviceIndexViewsList.Add(serviceIndexView);
             }
-
             return View(serviceIndexViewsList);
         }
 

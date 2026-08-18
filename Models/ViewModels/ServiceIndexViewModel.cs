@@ -6,7 +6,7 @@
         public string ServiceName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string CategoryName { get; set; } = string.Empty;
+        public string? CategoryName { get; set; } = string.Empty;
         public string? ExistingImage { get; set; } 
         public DurationViewModel DurationView { get; set; } = new DurationViewModel();
 
