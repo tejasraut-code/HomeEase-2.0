@@ -17,7 +17,7 @@ namespace HomeEase_2._0_MVC.Data
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ServiceModel>()
                 .HasOne(x => x.Category)
-                .WithMany()
+                .WithMany(x => x.Services)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -59,7 +59,7 @@
                             <h4 class="card-title">@item.CategoryName</h4>
                             <p class="card-text">@item.Description</p>
 
-                            <a class="btn btn-primary w-auto" href="#">Explore </a>
+                            <a class="btn btn-primary w-auto" asp-controller="Service" asp-action="Index" asp-route-categoryId="@item.CategoryId">Explore </a>
 
                             <a class="btn btn-warning w-auto" asp-action="Edit" asp-route-id="@item.CategoryId" >Edit </a>
 

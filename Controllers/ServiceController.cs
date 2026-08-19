@@ -18,10 +18,11 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId)
         {
             //List<ServiceModel> serviceViews = _context.Services.ToList();
-            List<ServiceModel> serviceViews = _context.Services.Include(x => x.Category).ToList();
+            //List<ServiceModel> serviceViews = _context.Services.Include(x => x.Category).ToList();
+            List<ServiceModel> serviceViews = _context.Services.Where(x => categoryId == null || x.CategoryId == categoryId).ToList();
             List<ServiceIndexViewModel> serviceIndexViewsList = new List<ServiceIndexViewModel>();
 
             foreach( var service in serviceViews)
