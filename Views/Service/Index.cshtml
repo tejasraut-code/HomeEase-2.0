@@ -8,43 +8,53 @@
         <h3 class="h3 text-center"> Book A Service </h3>
         
         <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
-        <div class="row">
+       <div class="row">
 
-            @foreach(var item in Model)
+        @if(Model.Count == 0)
+        {
+            <p>No Service Available in this Category.</p>
+        }
+        else
+        {
+
+            @foreach (var item in Model)
             {
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-img">
-                        @if (!string.IsNullOrEmpty(item.ExistingImage))
-                        {
-                            <img src="~/images/@item.ExistingImage" class="img-fluid" alt="@item.ServiceName" />
-                        }
-                        else
-                        {
-                            <div class="p-4 text-center">
-                                No Image Available
-                            </div>
-                        }
-                    </div>
-                    <div class="card-header">
-                        <h3 class="card-title">@item.ServiceName</h3>
-                        @* <p hidden>@item.ServiceId</p> *@
-                        <p class="card-text">@item.CategoryName</p>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">@item.Description</p>
-                        <p class="card-text"><b>Rs.</b>@item.Price/-</p>
-                        <p class="card-text">Estimated Time Required <br /> Days:@item.DurationView.Days  Hours:@item.DurationView.Hours    Minutes:@item.DurationView.Minutes </p>
-                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ServiceId">Book an Appoinment</a>
-                        <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-outline-warning">Edit</a>
-                        @* <button class="btn btn-primary">Book an Appoinment</button> *@
-                        @* <form asp-controller="Service"  method="post">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-img">
+                            @if (!string.IsNullOrEmpty(item.ExistingImage))
+                            {
+                                <img src="~/images/@item.ExistingImage" class="img-fluid" alt="@item.ServiceName" />
+                            }
+                            else
+                            {
+                                <div class="p-4 text-center">
+                                    No Image Available
+                                </div>
+                            }
+                        </div>
+                        <div class="card-header">
+                            <h3 class="card-title">@item.ServiceName</h3>
+                            @* <p hidden>@item.ServiceId</p> *@
+                            <p class="card-text">@item.CategoryName</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text"><b>Rs.</b>@item.Price/-</p>
+                            <p class="card-text">Estimated Time Required <br /> Days:@item.DurationView.Days  Hours:@item.DurationView.Hours    Minutes:@item.DurationView.Minutes </p>
+                            <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ServiceId">Book an Appoinment</a>
+                            <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-outline-warning">Edit</a>
+                            @* <button class="btn btn-primary">Book an Appoinment</button> *@
+                            @* <form asp-controller="Service"  method="post">
                            
                         </form> *@
+                        </div>
                     </div>
                 </div>
-            </div>
             }
-        </div>
+
+        }
+      
+       </div>
 
     </div>

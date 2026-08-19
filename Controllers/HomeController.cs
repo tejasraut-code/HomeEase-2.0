@@ -149,6 +149,14 @@ namespace HomeEase_2._0_MVC.Controllers
                 return NotFound();
             }
 
+            bool hasServices = _context.Services.Any(x => x.CategoryId == id);
+
+            if (hasServices)
+            {
+                TempData["ErrorMessage"] = "Cannot delete this category because services exist under it.";
+                return RedirectToAction("Index");
+            }
+
             _context.Category.Remove(category);
             _context.SaveChanges();
 

@@ -6,6 +6,10 @@
     @* hero Section *@
     <section id="hero" class="py-5">
         <div class="container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
             <div class="row align-items-center">
 
                 <div class="col-lg-6">
@@ -46,7 +50,7 @@
             <h2 class="text-center mb-5">Popular Categories</h2>
 
         <a class="btn btn-info mb-3" asp-controller="Home" asp-action="Create" >Add Category</a>
-        <a class="btn btn-warning" asp-controller="Service" asp-action="Index">Go to Service Page</a>
+        <a class="btn btn-warning mb-3" asp-controller="Service" asp-action="Index">Go to Service Page</a>
             <div class="row">
 
             @foreach (var item in Model)
