@@ -4,7 +4,9 @@
 @model List<ServiceIndexViewModel>
 
  <div class="container">
-        <h2 class="h2 text-center"> Book A Service </h2>
+        <h2 class="h2 text-center">@ViewBag.categoryName</h2>
+        <h3 class="h3 text-center"> Book A Service </h3>
+        
         <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
         <div class="row">
 

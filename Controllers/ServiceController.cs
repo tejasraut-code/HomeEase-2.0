@@ -20,11 +20,21 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Index(int? categoryId)
         {
+            string categoryName = "All Services";
             //List<ServiceModel> serviceViews = _context.Services.ToList();
             //List<ServiceModel> serviceViews = _context.Services.Include(x => x.Category).ToList();
+
+            if(categoryId != null)
+            {
+                CategoryModel? category = _context.Category.Find(categoryId);
+                if (category != null)
+                {
+                    categoryName = category.CategoryName;
+                }
+            }
             List<ServiceModel> serviceViews = _context.Services.Where(x => categoryId == null || x.CategoryId == categoryId).ToList();
             List<ServiceIndexViewModel> serviceIndexViewsList = new List<ServiceIndexViewModel>();
-
+           
             foreach( var service in serviceViews)
             {
                 ServiceIndexViewModel serviceIndexView = new ServiceIndexViewModel();
@@ -39,6 +49,7 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 serviceIndexViewsList.Add(serviceIndexView);
             }
+            ViewBag.categoryName = categoryName;
             return View(serviceIndexViewsList);
         }
 
