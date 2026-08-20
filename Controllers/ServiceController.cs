@@ -74,8 +74,8 @@ namespace HomeEase_2._0_MVC.Controllers
                 ServiceModel Service = new ServiceModel();
                 string servicename = viewService.ServiceName.Trim().ToLower();
 
-                int categroyId = viewService.CategoryId;
-                CategoryModel? category = _context.Category.Find(categroyId);
+                int categoryId = viewService.CategoryId;
+                CategoryModel? category = _context.Category.Find(categoryId);
 
                 var serviceNamePresent = _context.Services.Any( x => x.ServiceName.ToLower() == servicename);
 
@@ -113,7 +113,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Services.Add(Service);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new {categoryId = categoryId});
             }
 
             return View(viewService);
@@ -172,7 +172,7 @@ namespace HomeEase_2._0_MVC.Controllers
                     ModelState.AddModelError(nameof(serviceView.ServiceName), "Service Name Already Present");
                     return View(serviceView);
                 }
-
+                int categoryid = category.CategoryId;
                 service.CategoryId = serviceView.CategoryId;
                 service.ServiceId = serviceView.ServiceId;
                 service.ServiceName = serviceView.ServiceName;
@@ -200,9 +200,26 @@ namespace HomeEase_2._0_MVC.Controllers
                 //_context.Services.Update(service);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new {categoryid = categoryid});
             }
             return View(serviceView);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            ServiceModel? service = _context.Services.Find(id);
+      
+            if(service == null)
+            {
+                return NotFound();
+            }
+            int categoryId = service.CategoryId;
+            _context.Services.Remove(service);
+            _context.SaveChanges();
+
+            DeleteImage(service.Image);
+            return RedirectToAction("Index", new {categoryId = categoryId});
         }
 
         private int DurationToMinutes(int Days,int Hours, int Minutes)
@@ -210,7 +227,6 @@ namespace HomeEase_2._0_MVC.Controllers
             int DurationInMinutes = ( Days*1440)+(Hours*60)+(Minutes*1);
             return DurationInMinutes;
         }
-
         private DurationViewModel MinutesToDuration(int? time)
         {
             DurationViewModel Duration = new DurationViewModel();
@@ -236,7 +252,8 @@ namespace HomeEase_2._0_MVC.Controllers
         } 
         private string UploadImage(IFormFile BrowserImage)
         {
-            var fileName = BrowserImage.FileName ;
+            string fileextexsion = Path.GetExtension(BrowserImage.FileName) ;
+            string fileName = Guid.NewGuid().ToString() + fileextexsion;
             var folderPath = Path.Combine(_environment.WebRootPath, "images");
             var fileUploadPath = Path.Combine(folderPath, fileName);
 
@@ -246,7 +263,6 @@ namespace HomeEase_2._0_MVC.Controllers
             }
             return fileName;
         } 
-
         private void DeleteImage(string? fileName)
         {
             if (string.IsNullOrEmpty(fileName))

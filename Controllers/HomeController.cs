@@ -181,7 +181,9 @@ namespace HomeEase_2._0_MVC.Controllers
 
         private string UploadImage(IFormFile browserImage)
         {
-            var fileName = browserImage.FileName;
+            //var fileName = browserImage.FileName;
+            string fileExtension = Path.GetExtension(browserImage.FileName);
+            string fileName = Guid.NewGuid().ToString() + fileExtension;
             var folderPath = Path.Combine(_environment.WebRootPath, "images");
             var fileUploadPath = Path.Combine(folderPath, fileName);
 

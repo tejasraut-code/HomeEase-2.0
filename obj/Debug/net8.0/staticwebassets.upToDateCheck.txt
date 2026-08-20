@@ -8,6 +8,7 @@ wwwroot\images\images.jpg
 wwwroot\images\Painter.jpg
 wwwroot\images\Plumber.jpg
 wwwroot\images\sofa.jpg
+wwwroot\images\tap.webp
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
