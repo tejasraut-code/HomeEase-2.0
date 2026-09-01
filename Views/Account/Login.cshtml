@@ -1,5 +1,33 @@
-﻿
+﻿@model LoginViewModel
 
-<div class="container">
-    <h1 class="align-content-center">Login</h1>
-</div>
+<form asp-action="Login" method="post">
+    <div class="container">
+        <h3 class="text-center">Login Page</h3>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class=" row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card">
+                    <div class="card-header mb-1"><h4 class="text-primary">Login</h4></div>
+                    <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="Email">Email</label>
+                                <input class="form-control" asp-for="Email" />
+                                <span class="text-danger" asp-validation-for="Email"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="Password">Password</label>
+                                <input class="form-control" asp-for="Password" type="password"/>
+                                <span class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                     
+                    </div>
+                    <hr />
+                    <div class="card-footer">
+                        <a class="align-items-center text-primary" asp-action="Register" asp-controller="Account">Don't have an account? Register.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

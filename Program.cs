@@ -16,7 +16,11 @@ namespace HomeEase_2._0_MVC
 
             builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connectionString));
 
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
+
             var app = builder.Build();
+           
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -30,6 +34,7 @@ namespace HomeEase_2._0_MVC
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

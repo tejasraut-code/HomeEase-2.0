@@ -60,5 +60,43 @@ namespace HomeEase_2._0_MVC.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Login(LoginViewModel loginView)
+        {
+            if (ModelState.IsValid)
+            {
+                string emailID = loginView.Email.Trim().ToLower();
+                PasswordHasher<UserModel> passwordHasher = new PasswordHasher<UserModel>();
+
+                UserModel? user = _context.Users.FirstOrDefault(x => x.Email.ToLower() == emailID);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", errorMessage:"Invalid Email or Password.");
+                    return View(loginView);
+                }
+
+                var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginView.Password);
+
+                if(result == PasswordVerificationResult.Failed)
+                {
+                    ModelState.AddModelError("", errorMessage: "Invalid Email or Password.");
+                    return View(loginView);
+                }
+
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                HttpContext.Session.SetString("UserName", user.UserName);
+                HttpContext.Session.SetString("Role", user.Role);
+
+                return RedirectToAction("Index", "Home");
+            }
+            return View(loginView);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
