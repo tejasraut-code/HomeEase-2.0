@@ -7,6 +7,7 @@ namespace HomeEase_2._0_MVC.Data
     {
         public DbSet<CategoryModel> Category { get; set; }
         public DbSet<ServiceModel> Services { get; set; }
+        public DbSet<UserModel> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
@@ -20,6 +21,10 @@ namespace HomeEase_2._0_MVC.Data
                 .WithMany(x => x.Services)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserModel>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

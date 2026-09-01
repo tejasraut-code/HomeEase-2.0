@@ -1,0 +1,55 @@
+﻿@model RegisterViewModel
+
+<form method="post" asp-action="Register" >
+    <div class="container">
+
+        <h2 class="align-content-center mb-3" >Register New User</h2>
+
+        <div class="m-auto">
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="UserName">Name :</label>
+                <input class="form-control" asp-for="UserName" />
+                <span class="text-danger" asp-validation-for="UserName"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="Email">EmailId :</label>
+                <input class="form-control" asp-for="Email" />
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="Mobile">Mobile :</label>
+                <input class="form-control" asp-for="Mobile" />
+                <span class="text-danger" asp-validation-for="Mobile"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="Password">Password :</label>
+                <input type="password" class="form-control" asp-for="Password" />
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="ConfirmPassword">Confirm Password :</label>
+                <input type="password" class="form-control" asp-for="ConfirmPassword" />
+                <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" asp-for="Address">Address :</label>
+                <textarea class="form-control" asp-for="Address"></textarea>
+                <span class="text-danger" asp-validation-for="Address"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="City">City:</label>
+                <input class="form-control" asp-for="City" />
+                <span class="text-danger" asp-validation-for="City"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+</form>
