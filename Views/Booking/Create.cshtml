@@ -1,0 +1,57 @@
+﻿@model BookingViewModel
+
+<form method="post" asp-action="Create">
+    <div class="container">
+        <h4>Create a New Booking</h4>
+
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div>
+            <input type="hidden" asp-for="ServiceId" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="ServiceName">ServiceName</label>
+            <input class="form-control" asp-for="ServiceName" disabled/>
+            <span class="text-danger" asp-validation-for="ServiceName"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Price">Price</label>
+            <input class="form-control" asp-for="Price" disabled />
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+        <div class=" row mb-3">
+            <label class="form-label" asp-for="DurationView">Duration</label>
+            <div class="col-md-3">
+                <label class="col-form-label" asp-for="DurationView.Days">Day:</label>
+                <input class="form-control" asp-for="DurationView.Days" disabled />
+                <span class="text-danger" asp-validation-for="DurationView.Days"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" asp-for="DurationView.Hours">Hours:</label>
+                <input class="form-control" asp-for="DurationView.Hours" disabled />
+                <span class="text-danger" asp-validation-for="DurationView.Hours"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" asp-for="DurationView.Minutes">Minutes</label>
+                <input class="form-control" asp-for="DurationView.Minutes" disabled />
+                <span class="text-danger" asp-validation-for="DurationView.Minutes"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="ScheduledFor">ScheduledFor</label>
+            <input type="datetime-local" class="form-control" asp-for="ScheduledFor" asp-format="{0:yyyy-MM-ddTHH:mm}" step="60" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"/>
+            <span class="text-danger" asp-validation-for="ScheduledFor"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="ServiceAddress">ServiceAddress</label>
+            <textarea class="form-control" asp-for="ServiceAddress"></textarea>
+            <span class="text-danger" asp-validation-for="ServiceAddress"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="CustomerNote">Add a Note</label>
+            <textarea class="form-control" asp-for="CustomerNote"></textarea>
+            <span class="text-danger" asp-validation-for="CustomerNote"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Book an Apponiment</button>
+    </div>
+</form>

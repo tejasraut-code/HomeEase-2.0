@@ -42,7 +42,9 @@
                             <p class="card-text">@item.Description</p>
                             <p class="card-text"><b>Rs.</b>@item.Price/-</p>
                             <p class="card-text">Estimated Time Required <br /> Days:@item.DurationView.Days  Hours:@item.DurationView.Hours    Minutes:@item.DurationView.Minutes </p>
-                            <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ServiceId">Book an Appoinment</a>
+
+                            <a class="btn btn-info" asp-action="Create" asp-controller="Booking" asp-route-serviceId="@item.ServiceId">Book an Appoinment</a>
+
                             <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-outline-warning">Edit</a>
 
                             <form asp-action="Delete" asp-route-id="@item.ServiceId" method="post" onclick="return confirm('Are you sure you want to delete this service?')">
