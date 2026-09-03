@@ -1,0 +1,60 @@
+﻿@model List<BookingAdminViewModel>
+
+<div class="container">
+    <h2 class="text-center">Admin Page</h2>
+    @if (!Model.Any())
+    {
+        <span class="alert alert-info">
+            No Booking History Available
+        </span>
+    }
+    else
+    {
+        <div class="table">
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>BookingId</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Price</th>
+                        <th>Booked On</th>
+                        <th>Scheduled For</th>
+                        <th>Status</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.BookingId</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.ServiceName</td>
+                            <td>₹@item.Price/-</td>
+                            <td>@item.CreatedAt.ToString("d-MM-yyyy , H:mm tt")</td>
+                            <td>@item.ScheduledFor.ToString("dd-MM-yyyy , h:mm tt")</td>
+                            @if(item.BookingStatus == "Pending")
+                            {
+                                <td><span class="badge bg-warning text-white">@item.BookingStatus</span></td>
+                            }else if (item.BookingStatus == "Completed")
+                            {
+                                <td><span class="badge bg-success text-white">@item.BookingStatus</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge bg-danger text-white">@item.BookingStatus</span></td>
+                            }
+
+                            <td>
+                                <button class="btn btn-info">Confirm</button>
+                                <button class=" btn btn-success">Complete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    }
+</div>
