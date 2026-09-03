@@ -1,26 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
 
 namespace HomeEase_2._0_MVC.Models.ViewModels
 {
-    public class BookingViewModel
+    public class BookingIndexViewModel
     {
-        [Required]
-        public int ServiceId { get; set; }
-
-        [MaxLength(100)]
-        public string? ServiceName { get; set; } = string.Empty;
-
-        [Required]
+        public int BookingId { get; set; }
+        public string ServiceName { get; set; } = string.Empty;
         public decimal Price { get; set; }
-
         public DurationViewModel DurationView { get; set; } = new DurationViewModel();
-        [Required]
+        public DateTime CreateAt { get; set; }
         public DateTime ScheduledFor { get; set; }
-
-        [Required]
-        [MaxLength(300)]
         public string ServiceAddress { get; set; } = string.Empty;
-        [MaxLength(500)]
         public string? CustomerNote { get; set; } = string.Empty;
+        public string BookingStatus { get; set; } = string.Empty;
     }
 }

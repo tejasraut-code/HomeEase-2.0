@@ -1,0 +1,56 @@
+﻿@model List<BookingIndexViewModel>
+
+<div class="container">
+    <h2>My Bookings</h2>
+    
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                No Booking History Available.
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between">
+                            <h3 class="card-title">@item.ServiceName</h3>
+                            @if(item.BookingStatus == "Pending")
+                            {
+                                <span class="badge bg-warning text-black text-center p-2">@item.BookingStatus</span>
+                            }else if(item.BookingStatus == "Completed")
+                            {
+                                <span class="btn btn-success">@item.BookingStatus</span>
+                            }
+                            else
+                            {<span class="btn btn-danger">@item.BookingStatus</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <h4>Price: ₹ @item.Price /-</h4>
+                            <p>Booked On: @item.CreateAt.ToString("dd MM yyyy , hh:mm tt")</p>
+                            <p>Scheduled For: @item.ScheduledFor.ToString("dd MM yyyy , hh:mm tt")</p>
+                            <p>Duration: @item.DurationView.Days Day @item.DurationView.Hours Hours @item.DurationView.Minutes Minutes</p>
+                            <p>Address: @item.ServiceAddress</p>
+                            @if(!string.IsNullOrWhiteSpace(item.CustomerNote))
+                            {
+                                <p>Note: @item.CustomerNote</p>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            @if(item.BookingStatus == "Pending")
+                            {
+                                <form method="post" asp-action="Cancel" asp-controller="Booking" asp-route-bookingId="@item.BookingId" onsubmit="return confirm("Are you sure to cancel this Booking?")">
+                                    <button class="btn btn-outline-danger">Cancel Booking</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        } 
+    </div>
+</div>

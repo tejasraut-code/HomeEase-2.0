@@ -16,6 +16,41 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if(userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            List<BookingIndexViewModel> bookingIndex = new List<BookingIndexViewModel>();
+            List<BookingModel> bookings = _context.Bookings.Where(x => x.UserId == userId).ToList();
+            if(bookings.Any() ) // or bookings.Count > 0 ;
+            {
+                foreach(var item in bookings)
+                {
+                    BookingIndexViewModel bookingIndexView = new BookingIndexViewModel();
+                    bookingIndexView.BookingId = item.BookingId;
+                    bookingIndexView.ServiceName = item.ServiceNameAtBooking;
+                    bookingIndexView.Price = item.PriceAtBooking;
+                    bookingIndexView.DurationView = MinutesToDuration(item.DurationMinutesAtBooking);
+                    bookingIndexView.CreateAt = item.CreatedAt;
+                    bookingIndexView.ScheduledFor = item.ScheduledFor;
+                    bookingIndexView.ServiceAddress = item.ServiceAddress;
+                    bookingIndexView.CustomerNote = item.CustomerNote;
+                    bookingIndexView.BookingStatus = item.BookingStatus;
+
+                    bookingIndex.Add(bookingIndexView);
+                }
+                return View(bookingIndex);
+            }
+
+            ViewBag.Message = "No Booking History Available";
+            return View(bookingIndex);
+        }
+
+        [HttpGet]
         public IActionResult Create(int serviceId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -85,6 +120,29 @@ namespace HomeEase_2._0_MVC.Controllers
                 bookingView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
             }
                 return View(bookingView);
+        }
+
+        [HttpPost]
+        public IActionResult Cancel(int bookingId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if(userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            BookingModel? booking = _context.Bookings.FirstOrDefault(x => x.UserId == userId && x.BookingId ==bookingId);
+            if(booking == null)
+            {
+                return NotFound();
+            }
+            if(booking.BookingStatus != "Pending")
+            {
+                return RedirectToAction("Index");
+            }   
+            booking.BookingStatus = "Cancelled";
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Booking");
         }
 
         private DurationViewModel MinutesToDuration(int? duration)

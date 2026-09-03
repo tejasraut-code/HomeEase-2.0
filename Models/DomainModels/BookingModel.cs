@@ -13,7 +13,7 @@ namespace HomeEase_2._0_MVC.Models.DomainModels
 
         [Required]
         [MaxLength(100)]
-        public string? ServiceNameAtBooking { get; set; } = string.Empty;
+        public string ServiceNameAtBooking { get; set; } = string.Empty;
 
 
         public decimal PriceAtBooking { get; set; }
