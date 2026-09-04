@@ -88,7 +88,6 @@ namespace HomeEase_2._0_MVC.Controllers
                 booking.BookingStatus = "Completed";
 
                 _context.SaveChanges();
-                return RedirectToAction("Booking", "Admin");
             }
             return RedirectToAction("Booking", "Admin");
         }
