@@ -44,6 +44,55 @@ namespace HomeEase_2._0_MVC.Controllers
              return View(bookingAdminView);
         }
 
+        [HttpPost]
+        public IActionResult Confirm(int bookingId)
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+            if(userRole != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            BookingModel? booking = _context.Bookings.FirstOrDefault(x=>x.BookingId == bookingId);
+            if(booking == null)
+            {
+                return NotFound();
+            }
+
+            if(booking.BookingStatus == "Pending")
+            {
+                booking.BookingStatus = "Confirmed";
+                _context.SaveChanges();
+
+                return RedirectToAction("Booking", "Admin");
+            }
+            return RedirectToAction("Booking","Admin");
+        }
+
+        [HttpPost]
+        public IActionResult Complete(int bookingId)
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+            if(userRole != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            BookingModel? booking = _context.Bookings.FirstOrDefault(x => x.BookingId == bookingId);
+            if(booking == null)
+            {
+                return NotFound();
+            }
+            if(booking.BookingStatus == "Confirmed")
+            {
+                booking.BookingStatus = "Completed";
+
+                _context.SaveChanges();
+                return RedirectToAction("Booking", "Admin");
+            }
+            return RedirectToAction("Booking", "Admin");
+        }
+
         private DurationViewModel MinutesToDuration(int? minutes)
         {
             DurationViewModel duration = new DurationViewModel();

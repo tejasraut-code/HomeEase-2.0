@@ -32,7 +32,7 @@
                             <td>@item.CustomerName</td>
                             <td>@item.ServiceName</td>
                             <td>₹@item.Price/-</td>
-                            <td>@item.CreatedAt.ToString("d-MM-yyyy , H:mm tt")</td>
+                            <td>@item.CreatedAt.ToString("d-MM-yyyy , h:mm tt")</td>
                             <td>@item.ScheduledFor.ToString("dd-MM-yyyy , h:mm tt")</td>
                             @if(item.BookingStatus == "Pending")
                             {
@@ -41,15 +41,35 @@
                             {
                                 <td><span class="badge bg-success text-white">@item.BookingStatus</span></td>
                             }
+                            else if(item.BookingStatus == "Confirmed")
+                            {
+                                <td><span class="badge bg-primary text-white">@item.BookingStatus</span></td>
+                            }
                             else
                             {
                                 <td><span class="badge bg-danger text-white">@item.BookingStatus</span></td>
                             }
 
-                            <td>
-                                <button class="btn btn-info">Confirm</button>
-                                <button class=" btn btn-success">Complete</button>
-                            </td>
+                            @if(item.BookingStatus == "Pending")
+                            {
+                                <td>
+                                    <form asp-action="Confirm" method="post" asp-route-bookingId="@item.BookingId">
+                                        <button class="btn btn-info">Confirm</button>
+                                    </form>
+                                </td>
+                            }else if(item.BookingStatus == "Confirmed")
+                            {
+                                <td>
+                                    <form asp-action="Complete" method="post" asp-route-bookingId="@item.BookingId">
+                                    <button class=" btn btn-success">Complete</button>
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+
                         </tr>
                     }
                 </tbody>
