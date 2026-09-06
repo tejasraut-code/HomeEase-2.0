@@ -27,7 +27,7 @@ namespace HomeEase_2._0_MVC.Models.ViewModels
 
 
         [Required]
-        [Range(0,50)]
+        [Range(0,50, ErrorMessage = "Experience must be between 0 and 50 years.")]
         public int ExperienceYears { get; set; }
         [MaxLength(500)]
         public string? Bio { get; set; }
