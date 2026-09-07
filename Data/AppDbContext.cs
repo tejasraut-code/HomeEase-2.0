@@ -11,6 +11,7 @@ namespace HomeEase_2._0_MVC.Data
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<ProviderServiceModel> ProviderServices { get; set; }
         public DbSet<ProviderProfileModel> ProviderProfiles { get; set; } 
+        public DbSet<BookingProviderModel> BookingProviders { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
@@ -63,6 +64,23 @@ namespace HomeEase_2._0_MVC.Data
             modelBuilder.Entity<ProviderServiceModel>()
                 .HasIndex(x => new { x.ServiceId, x.ProviderId })
                 .IsUnique();
+
+            modelBuilder.Entity<BookingProviderModel>()
+                .HasOne(x => x.Booking)
+                .WithMany()
+                .HasForeignKey(x => x.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BookingProviderModel>()
+                .HasOne(x => x.ProviderProfile)
+                .WithMany()
+                .HasForeignKey(x => x.ProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BookingProviderModel>()
+                .HasIndex(x => x.BookingId)
+                .IsUnique();
+
         }
     }
 }

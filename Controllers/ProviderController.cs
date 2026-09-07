@@ -4,6 +4,7 @@ using HomeEase_2._0_MVC.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeEase_2._0_MVC.Controllers
 {
@@ -15,9 +16,53 @@ namespace HomeEase_2._0_MVC.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            string? userRole = HttpContext.Session.GetString("Role");
+            if(userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if(userRole != "ServiceProvider")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ProviderProfileModel? providerProfile = _context.ProviderProfiles.Include(x => x.User).FirstOrDefault(x => x.UserId == userId);
+            if(providerProfile == null)
+            {
+                return NotFound();
+            }
+
+
+            List<ProviderServiceModel>providerServices = _context.ProviderServices.Include( x=> x.Service).Where(x => x.ProviderId == providerProfile.ProviderId).ToList();
+
+            ProviderDashboardViewModel providerDashboardView = new ProviderDashboardViewModel();
+
+            providerDashboardView.ProviderId = providerProfile.ProviderId;
+            providerDashboardView.ProviderName = providerProfile.User?.UserName ?? "Unknown User";
+            providerDashboardView.ExperienceYears = providerProfile.ExperienceYears;
+            providerDashboardView.ServiceArea = providerProfile.ServiceArea;
+            providerDashboardView.Bio = providerProfile.Bio;
+
+            if (!providerProfile.IsApproved)
+            {
+                ViewBag.Message = "Waiting for Approval";
+                return View(providerDashboardView);
+            }
+
+            foreach (var item in providerServices)
+            {
+                if(item.Service != null)
+                {
+                    providerDashboardView.ServiceName.Add(item.Service.ServiceName);
+                }
+            }
+
+            return View(providerDashboardView);
         }
 
         [HttpGet]
