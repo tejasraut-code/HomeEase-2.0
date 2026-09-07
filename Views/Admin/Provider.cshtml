@@ -1,0 +1,57 @@
+﻿@model List<ProviderAdminViewModel>
+
+<div class="container">
+
+    <div class="py-3">
+
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>ProviderId</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Experience</th>
+                    <th>Service Area</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProviderId</td>
+                        <td>@item.UserName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Mobile</td>
+                        <td>@item.ExperienceYears</td>
+                        <td>@item.ServiceArea</td>
+                        @if(item.IsApproved)
+                        {
+                            <td>
+                                <span class="badge bg-success">Approved</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            </td>
+                        }
+                        @if (!item.IsApproved)
+                        {
+                            <td>
+                                <form method="post" asp-action="ApproveProvider" asp-route-providerId="@item.ProviderId">
+                                    <button type="submit" class="btn btn-primary">Approve</button>
+                                </form>
+                            </td>
+                         }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

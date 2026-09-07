@@ -43,7 +43,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 Value = x.ServiceId.ToString()
             }).ToList();
 
-            if(!providerRegisterView.SelectedServiceIds.Any() || providerRegisterView.SelectedServiceIds == null)
+            if(providerRegisterView.SelectedServiceIds == null  ||  !providerRegisterView.SelectedServiceIds.Any())
             {
                 ModelState.AddModelError(nameof(providerRegisterView.SelectedServiceIds), "Please select at least one service.");
                 return View(providerRegisterView);

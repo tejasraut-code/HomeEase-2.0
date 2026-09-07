@@ -92,6 +92,63 @@ namespace HomeEase_2._0_MVC.Controllers
             return RedirectToAction("Booking", "Admin");
         }
 
+        [HttpGet]
+        public IActionResult Provider()
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+
+            if(userRole != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            List<ProviderProfileModel> providerProfiles = _context.ProviderProfiles.Include(x => x.User).ToList();
+    
+            List<ProviderAdminViewModel> providerAdminViewsList = new List<ProviderAdminViewModel>();
+
+                foreach(var item in providerProfiles)
+                {
+                    ProviderAdminViewModel providerAdminView = new ProviderAdminViewModel();
+
+                    providerAdminView.ProviderId = item.ProviderId;
+                    providerAdminView.UserName = item.User?.UserName??"Unknown User";
+                    providerAdminView.Email = item.User?.Email?? string.Empty;
+                    providerAdminView.Mobile = item.User?.Mobile?? string.Empty;
+                    providerAdminView.ExperienceYears = item.ExperienceYears;
+                    providerAdminView.Bio = item.Bio;
+                    providerAdminView.ServiceArea = item.ServiceArea;
+                    providerAdminView.IsApproved = item.IsApproved;
+
+                    providerAdminViewsList.Add(providerAdminView);
+                }
+
+            return View(providerAdminViewsList);
+        }
+
+        [HttpPost]
+        public IActionResult ApproveProvider(int providerId)
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+            if(userRole != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ProviderProfileModel? providerProfile = _context.ProviderProfiles.Find(providerId);
+            if(providerProfile == null)
+            {
+                return NotFound();
+            }
+
+            if (!providerProfile.IsApproved)
+            {
+                providerProfile.IsApproved = true;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Provider");
+        }
+
         private DurationViewModel MinutesToDuration(int? minutes)
         {
             DurationViewModel duration = new DurationViewModel();
