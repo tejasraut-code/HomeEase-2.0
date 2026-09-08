@@ -58,8 +58,37 @@ namespace HomeEase_2._0_MVC.Controllers
             {
                 if(item.Service != null)
                 {
-                    providerDashboardView.ServiceName.Add(item.Service.ServiceName);
+                    providerDashboardView.ServiceNames.Add(item.Service.ServiceName);
                 }
+            }
+
+            List<BookingProviderModel> bookingProvider = _context.BookingProviders.Include(x => x.Booking).ThenInclude(x => x!.User).Include(x => x.Booking).ThenInclude(x => x!.Service).ThenInclude(x => x!.Category).Where(x => x.ProviderId == providerProfile.ProviderId).ToList();
+
+            foreach(var item in bookingProvider)
+            {
+                if(item.Booking == null)
+                {
+                    continue;
+                }
+                ProviderBookingViewModel providerBookingView = new ProviderBookingViewModel();
+                providerBookingView.BookingId = item.BookingId;
+                providerBookingView.CustomerName = item.Booking.User?.UserName?? "Unknown User";
+                providerBookingView.Mobile = item.Booking.User?.Mobile?? "Not Available";
+                providerBookingView.City = item.Booking.User?.City?? "Not Available";
+
+                providerBookingView.ServiceAddress = item.Booking.ServiceAddress??"Not Available";
+                providerBookingView.ServiceName = item.Booking.ServiceNameAtBooking??"Not Available";
+                providerBookingView.CategoryName = item.Booking.Service?.Category?.CategoryName??"Unknown Service";
+
+                providerBookingView.CustomerNote = item.Booking.CustomerNote;
+
+                providerBookingView.BookedOn = item.Booking.CreatedAt;
+                providerBookingView.ScheduledFor = item.Booking.ScheduledFor;
+
+                providerBookingView.ServicePrice = item.Booking.PriceAtBooking;
+                providerBookingView.BookingStatus = item.Booking.BookingStatus;
+
+                providerDashboardView.ProviderBookingView.Add(providerBookingView);
             }
 
             return View(providerDashboardView);

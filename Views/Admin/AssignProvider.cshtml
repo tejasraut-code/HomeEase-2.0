@@ -1,0 +1,35 @@
+﻿@model AssignProviderViewModel
+
+<div class="container">
+
+    <h2>Assign Provider to The Booking</h2>
+
+    <div class="card py-4 shadow">
+        @if (!Model.ProviderOptions.Any())
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Message
+            </div>  
+        }
+        <div class="card-body">
+            <form asp-action="AssignProvider" method="post">
+            <div class="row mb-3">
+                <input type="hidden" asp-for="@Model.BookingId" />
+                <div class="col-md-4">
+                    <p><strong>Service: </strong> @Model.ServiceName</p>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" asp-for="SelectedProviderId">Provider: </label>
+                    <select class="form-select" asp-for="SelectedProviderId" asp-items="@Model.ProviderOptions">
+                        <option value="0">Select Provider</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="SelectedProviderId"></span>
+                </div>
+                <div class="col-md-3">
+                        <button type="submit" class="btn btn-success">Confirm Booking</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

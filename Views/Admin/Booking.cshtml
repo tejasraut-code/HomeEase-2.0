@@ -53,9 +53,7 @@
                             @if(item.BookingStatus == "Pending")
                             {
                                 <td>
-                                    <form asp-action="Confirm" method="post" asp-route-bookingId="@item.BookingId">
-                                        <button class="btn btn-info">Confirm</button>
-                                    </form>
+                                    <a class="btn btn-outline-primary" asp-action="AssignProvider" asp-route-bookingId="@item.BookingId">Assign Provider</a>
                                 </td>
                             }else if(item.BookingStatus == "Confirmed")
                             {
