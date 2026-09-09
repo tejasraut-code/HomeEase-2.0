@@ -32,11 +32,81 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                @foreach(var item in Model.ServiceName)
+                @foreach(var item in Model.ServiceNames)
                 {
                     <span class="badge bg-secondary p-2 ">@item</span>
                 }
             </div>
         </div>
     </div>
+
+    @if (!Model.ProviderBookingView.Any())
+    {
+        <div class="alert alert-danger">
+            <p>No Booking has been assigned to you.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-active text-center p-3 ">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Customer</th>
+                        <th>Mobile</th>
+                        <th>Service</th>
+                        <th>Category</th>
+                        <th>Scheduled For</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ProviderBookingView)
+                    {
+                        <tr>
+                            <td>@item.BookingId</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Mobile</td>
+                            <td>@item.ServiceName</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.ScheduledFor.ToString("dd-MM-yyyy hh:mm tt")</td>
+                            <td>₹@item.ServicePrice</td>
+                            <td>
+                                @if (item.BookingStatus == "Confirmed")
+                                {
+                                    <span class="badge bg-primary p-2">@item.BookingStatus</span>
+                                }
+                                else if (item.BookingStatus == "Completed")
+                                {
+                                    <span class="badge bg-success p-2">@item.BookingStatus</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger p-2">@item.BookingStatus</span>
+                                }
+                            </td>
+                            @if(item.BookingStatus == "Confirmed")
+                            {
+                             <td>
+                                <form method="post" asp-action="CompleteBooking" asp-route-bookingId="@item.BookingId">
+                                    <button class="btn btn-success" type="submit">Complete Booking</button>
+                                </form>
+                             </td>
+                                
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    
 </div>

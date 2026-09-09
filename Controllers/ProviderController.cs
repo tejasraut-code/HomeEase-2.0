@@ -94,6 +94,42 @@ namespace HomeEase_2._0_MVC.Controllers
             return View(providerDashboardView);
         }
 
+        [HttpPost]
+        public IActionResult CompleteBooking(int bookingId)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            string? userRole = HttpContext.Session.GetString("Role");
+            if(userRole != "ServiceProvider")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ProviderProfileModel? providerProfile = _context.ProviderProfiles.FirstOrDefault( x=> x.UserId == userId);
+            if(providerProfile == null)
+            {
+                return RedirectToAction("Login","Account");
+            }
+            BookingProviderModel? bookingProvider = _context.BookingProviders.Include(x => x.Booking).FirstOrDefault(x => x.BookingId == bookingId && x.ProviderId == providerProfile.ProviderId);
+            if(bookingProvider == null)
+            {
+                return NotFound();
+            }
+            if(!providerProfile.IsApproved)
+            {
+                return RedirectToAction("Index", "Provider");
+            }
+
+            if (bookingProvider.Booking?.BookingStatus == "Confirmed")
+            {
+                bookingProvider.Booking.BookingStatus = "Completed";
+
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Provider");
+            }
+
+            return RedirectToAction("Index", "Provider");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
