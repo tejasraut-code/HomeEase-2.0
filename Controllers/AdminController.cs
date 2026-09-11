@@ -25,7 +25,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 return RedirectToAction("Index", "Home");
             }
             List<BookingAdminViewModel> bookingAdminView = new List<BookingAdminViewModel>();
-            List<BookingModel> bookings = _context.Bookings.Include(x =>x.User).ToList();
+            List<BookingModel> bookings = _context.Bookings.Include(x =>x.User).OrderByDescending(x => x.CreatedAt).ToList();
                 foreach (var item in bookings)
                 {
                     BookingAdminViewModel adminViewModel = new BookingAdminViewModel();

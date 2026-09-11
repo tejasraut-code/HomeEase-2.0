@@ -62,7 +62,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 }
             }
 
-            List<BookingProviderModel> bookingProvider = _context.BookingProviders.Include(x => x.Booking).ThenInclude(x => x!.User).Include(x => x.Booking).ThenInclude(x => x!.Service).ThenInclude(x => x!.Category).Where(x => x.ProviderId == providerProfile.ProviderId).ToList();
+            List<BookingProviderModel> bookingProvider = _context.BookingProviders.Include(x => x.Booking).ThenInclude(x => x!.User).Include(x => x.Booking).ThenInclude(x => x!.Service).ThenInclude(x => x!.Category).Where(x => x.ProviderId == providerProfile.ProviderId).OrderByDescending( x=> x.Booking!.CreatedAt).ToList();
 
             foreach(var item in bookingProvider)
             {
@@ -81,7 +81,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 providerBookingView.CategoryName = item.Booking.Service?.Category?.CategoryName??"Unknown Service";
 
                 providerBookingView.CustomerNote = item.Booking.CustomerNote;
-
+                
                 providerBookingView.BookedOn = item.Booking.CreatedAt;
                 providerBookingView.ScheduledFor = item.Booking.ScheduledFor;
 

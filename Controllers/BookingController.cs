@@ -25,7 +25,7 @@ namespace HomeEase_2._0_MVC.Controllers
             }
 
             List<BookingIndexViewModel> bookingIndex = new List<BookingIndexViewModel>();
-            List<BookingModel> bookings = _context.Bookings.Where(x => x.UserId == userId).ToList();
+            List<BookingModel> bookings = _context.Bookings.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedAt).ToList();
             if(bookings.Any() ) // or bookings.Count > 0 ;
             {
                 foreach(var item in bookings)
