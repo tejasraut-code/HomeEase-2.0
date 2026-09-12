@@ -1,7 +1,10 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\410a7428-198a-46c3-a927-f2a91b9d087c.webp
+wwwroot\images\ba70c6a7-d351-4bf1-b83b-d37a328ff182.webp
 wwwroot\images\Carpenter.jpg
 wwwroot\images\Cleaner.jpg
+wwwroot\images\earbuds.jpeg
 wwwroot\images\Electrician.jpg
 wwwroot\images\images.jpg
 wwwroot\images\Painter.jpg
@@ -65,6 +68,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\images\earbuds.jpeg
-wwwroot\images\410a7428-198a-46c3-a927-f2a91b9d087c.webp
-wwwroot\images\ba70c6a7-d351-4bf1-b83b-d37a328ff182.webp
