@@ -18,23 +18,23 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Service()
+        public IActionResult Service(int? categoryId)
         {
-            List<ServiceModel> service = _context.Services.Include(x => x.Category).ToList();
-            List<ServiceDto> serviceDtos = new List<ServiceDto>();
+            List<ServiceModel> serviceList = _context.Services.Include(x => x.Category).Where( x => categoryId == null || x.CategoryId == categoryId).ToList();
+            List<ServiceDto> serviceDtosList = new List<ServiceDto>();
 
-            foreach (var item in service)
+            foreach (var item in serviceList)
             {
                 ServiceDto serviceDto = new ServiceDto();
                 serviceDto.ServiceId = item.ServiceId;
                 serviceDto.ServiceName = item.ServiceName;
                 serviceDto.Description = item.Description;
                 serviceDto.Price = item.Price;
-                serviceDto.CategoryName = item.Category?.CategoryName ?? "Unkown Category";
+                serviceDto.CategoryName = item.Category?.CategoryName ?? "Unknown Category";
 
-                serviceDtos.Add(serviceDto);
+                serviceDtosList.Add(serviceDto);
             }
-            return Ok(serviceDtos);
+            return Ok(serviceDtosList);
         }
     }
 
