@@ -4,6 +4,7 @@ using HomeEase_2._0_MVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace HomeEase_2._0_MVC.Controllers
 {
@@ -18,23 +19,28 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int? categoryId)
+        public async Task<IActionResult> Index(int? categoryId)
         {
             string categoryName = "All Services";
-            //List<ServiceModel> serviceViews = _context.Services.ToList();
-            //List<ServiceModel> serviceViews = _context.Services.Include(x => x.Category).ToList();
-
-            if(categoryId != null)
+            if (categoryId != null)
             {
-                CategoryModel? category = _context.Category.Find(categoryId);
-                if (category != null)
+                CategoryModel? category = await _context.Category.FindAsync(categoryId.Value);
+                if (category == null)
                 {
-                    categoryName = category.CategoryName;
+                    return NotFound();
                 }
+                categoryName = category.CategoryName;
             }
-            List<ServiceModel> serviceViews = _context.Services.Where(x => categoryId == null || x.CategoryId == categoryId).ToList();
-            List<ServiceIndexViewModel> serviceIndexViewsList = new List<ServiceIndexViewModel>();
-           
+
+            ServicePageViewModel servicePageView = new ServicePageViewModel();
+            servicePageView.SelectedCategoryId = categoryId;
+            servicePageView.CategoryOptions = await _context.Category.Select(x => new SelectListItem
+            {
+                Text = x.CategoryName,
+                Value = x.CategoryId.ToString()
+            }).ToListAsync();
+
+            List<ServiceModel> serviceViews = await _context.Services.Include( x => x.Category).Where(x => categoryId == null || x.CategoryId == categoryId).ToListAsync();
             foreach( var service in serviceViews)
             {
                 ServiceIndexViewModel serviceIndexView = new ServiceIndexViewModel();
@@ -44,29 +50,29 @@ namespace HomeEase_2._0_MVC.Controllers
                 serviceIndexView.Price = service.Price;
                 serviceIndexView.ExistingImage = service.Image;
                 serviceIndexView.DurationView = MinutesToDuration(service.EstimatedDurationMinutes);
-
                 serviceIndexView.CategoryName = service.Category?.CategoryName;
 
-                serviceIndexViewsList.Add(serviceIndexView);
+                servicePageView.Services.Add(serviceIndexView);
             }
+
             ViewBag.categoryName = categoryName;
-            return View(serviceIndexViewsList);
+            return View(servicePageView);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ServiceViewModel viewService = new ServiceViewModel();
 
-            List<CategoryModel> categories = _context.Category.ToList();
+            List<CategoryModel> categories = await _context.Category.ToListAsync();
             viewService.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
 
             return View(viewService);
         }
         [HttpPost]
-        public IActionResult Create(ServiceViewModel viewService)
+        public async Task<IActionResult> Create(ServiceViewModel viewService)
         {
-            List<CategoryModel> categories = _context.Category.ToList();
+            List<CategoryModel> categories = await _context.Category.ToListAsync();
             viewService.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
 
             if (ModelState.IsValid)
@@ -75,9 +81,9 @@ namespace HomeEase_2._0_MVC.Controllers
                 string servicename = viewService.ServiceName.Trim().ToLower();
 
                 int categoryId = viewService.CategoryId;
-                CategoryModel? category = _context.Category.Find(categoryId);
+                CategoryModel? category = await _context.Category.FindAsync(categoryId);
 
-                var serviceNamePresent = _context.Services.Any( x => x.ServiceName.ToLower() == servicename);
+                var serviceNamePresent = await _context.Services.AnyAsync( x => x.ServiceName.ToLower() == servicename);
 
                 if(serviceNamePresent)
                 {
@@ -102,16 +108,16 @@ namespace HomeEase_2._0_MVC.Controllers
 
                 if (viewService.BrowserImage != null)
                 {
-                    var imageName = UploadImage(viewService.BrowserImage);
+                    var imageName = await UploadImage(viewService.BrowserImage);
                     Service.Image = imageName;
                 }
                 else
                 {
-                    Service.Image = null;
+                    Service.Image = null;   
                 }
 
                 _context.Services.Add(Service);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index", new {categoryId = categoryId});
             }
@@ -120,12 +126,12 @@ namespace HomeEase_2._0_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            ServiceModel? service = _context.Services.Find(id);
+            ServiceModel? service = await _context.Services.FindAsync(id);
             ServiceViewModel serviceView = new ServiceViewModel();
             List<CategoryModel> categories = new List<CategoryModel>();
-            categories = _context.Category.ToList();
+            categories = await _context.Category.ToListAsync();
             if (service == null)
             {
                 return NotFound();
@@ -147,17 +153,17 @@ namespace HomeEase_2._0_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(ServiceViewModel serviceView)
+        public async Task<IActionResult> Edit(ServiceViewModel serviceView)
         {
-            List<CategoryModel> categories = _context.Category.ToList();
+            List<CategoryModel> categories = await _context.Category.ToListAsync();
             serviceView.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
             if (ModelState.IsValid)
             {
-                ServiceModel? service = _context.Services.Find(serviceView.ServiceId);
-                CategoryModel? category = _context.Category.Find(serviceView.CategoryId);
+                ServiceModel? service = await _context.Services.FindAsync(serviceView.ServiceId);
+                CategoryModel? category = await _context.Category.FindAsync(serviceView.CategoryId);
 
                 string serviceName = serviceView.ServiceName.Trim().ToLower();
-                bool serviceCheck = _context.Services.Any(x => x.ServiceName.ToLower() == serviceName && x.ServiceId != serviceView.ServiceId && x.CategoryId == serviceView.CategoryId);
+                bool serviceCheck = await _context.Services.AnyAsync(x => x.ServiceName.ToLower() == serviceName && x.ServiceId != serviceView.ServiceId && x.CategoryId == serviceView.CategoryId);
                 if (service == null)    
                 {
                     return NotFound();
@@ -184,7 +190,7 @@ namespace HomeEase_2._0_MVC.Controllers
 
                     if(serviceView.BrowserImage != null)
                     {
-                        string imgName =  UploadImage(serviceView.BrowserImage);
+                        string imgName = await UploadImage(serviceView.BrowserImage);
                         
                         if (!string.IsNullOrEmpty(imgName))
                         {
@@ -197,18 +203,17 @@ namespace HomeEase_2._0_MVC.Controllers
                     service.Image = serviceView.ExistingImage;
                 }
 
-                //_context.Services.Update(service);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", new {categoryid = categoryid});
+                return RedirectToAction("Index", new {categoryId = categoryid});
             }
             return View(serviceView);
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ServiceModel? service = _context.Services.Find(id);
+            ServiceModel? service = await _context.Services.FindAsync(id);
       
             if(service == null)
             {
@@ -216,12 +221,18 @@ namespace HomeEase_2._0_MVC.Controllers
             }
             int categoryId = service.CategoryId;
             _context.Services.Remove(service);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             DeleteImage(service.Image);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true ,serviceId = id});
+            }
+
             return RedirectToAction("Index", new {categoryId = categoryId});
         }
-
+         
         private int DurationToMinutes(int Days,int Hours, int Minutes)
         {
             int DurationInMinutes = ( Days*1440)+(Hours*60)+(Minutes*1);
@@ -250,7 +261,7 @@ namespace HomeEase_2._0_MVC.Controllers
 
             return Duration ;
         } 
-        private string UploadImage(IFormFile BrowserImage)
+        private async Task<string> UploadImage(IFormFile BrowserImage)
         {
             string fileextexsion = Path.GetExtension(BrowserImage.FileName) ;
             string fileName = Guid.NewGuid().ToString() + fileextexsion;
@@ -259,7 +270,7 @@ namespace HomeEase_2._0_MVC.Controllers
 
             using(var stream = new FileStream(fileUploadPath, FileMode.Create))
             {
-                BrowserImage.CopyTo(stream);
+                await BrowserImage.CopyToAsync(stream);
             }
             return fileName;
         } 

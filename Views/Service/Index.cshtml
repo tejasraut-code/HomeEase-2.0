@@ -1,23 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Service Page";
 }
-@model List<ServiceIndexViewModel>
+@model ServicePageViewModel
 
- <div class="container">
-        <h2 class="h2 text-center">@ViewBag.categoryName</h2>
+ <div class="container p-4">
+
+        <div class="d-flex justify-content-evenly">
+            <h2 id="categoryHeading">@ViewBag.categoryName</h2>
+            <div>
+            <select class="form-select" asp-for="SelectedCategoryId" asp-items="Model.CategoryOptions" >
+                <option value="">All Category</option>
+            </select>
+            </div>
+        </div>
+
         <h3 class="h3 text-center"> Book A Service </h3>
         
         <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
-       <div class="row">
 
-        @if(Model.Count == 0)
-        {
+      <div class="row" id="serviceList">
+       @if(!Model.Services.Any())
+       {
             <p>No Service Available in this Category.</p>
         }
-        else
+       else
         {
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.Services)
             {
                 <div class="col-md-4 mb-3">
                     <div class="card">
@@ -56,8 +65,104 @@
                 </div>
             }
 
-        }
+       }
       
-       </div>
+      </div>
 
     </div>
+
+
+@section Scripts{
+    <script>
+        $("#SelectedCategoryId").on("change",function (){
+                    var categoryId =  $(this).val();
+
+                    console.log(categoryId);
+
+                    $.ajax({
+                        url:"/api/services",
+                        type: "GET",
+                        data :{
+                            categoryId: categoryId
+                        },
+
+                        success : function(data){
+
+                            // console.log(data);
+
+                            // $("#serviceList").html("<h4>Ajax Worked and Service List Replaced</h4>");
+                            console.log($("#serviceList").length);
+
+                            console.log("API SUCCESS");
+                            console.log("Number of services:", data.length);
+
+                            console.log("serviceList found:", $("#serviceList").length);
+                               
+                            data.forEach(function (item, index) {
+                            console.log("Loop:", index, item.serviceName); });
+
+
+
+                            $("#serviceList").empty();
+                            
+                            if(data.length === 0){
+                                $("#serviceList").html(
+                                    "<p>No Service Available in this Category.</p>"
+                                );
+                                return;
+                            }
+
+                           var categoryName = $("#SelectedCategoryId option:selected").text();
+                           $("#categoryHeading").text(categoryName);
+
+                            data.forEach(function (item){
+
+                                console.log(item.serviceName);
+                                console.log(item.categoryName);
+                                console.log(item.price);
+
+                                var card=`
+                                <div class="col-md-4 p-3">
+                                    <div class="card p-4">
+                                        <div class="card-img">
+                                            ${item.image && item.image.length !== 0 
+                                                ? `<img src="/images/${item.image}" class="img-fluid">`
+                                                : `<p> No Image Available</p>`
+                                            }
+                                        </div>
+                                        <div class="card-body">
+                                        <h4>${item.serviceName}</h4>
+                                        <p>${item.categoryName}</p>
+                                        <p>${item.description}</p>
+                                        <p>Rs. ${item.price}</p>
+                                        <p> Total Time Required in Minutes : ${item.estimatedDurationMinutes}</p>
+                                        </div>
+                                        <div class="card-footer p-4">
+                                            <a href="/Booking/Create?serviceId=${item.serviceId}" class="btn btn-primary">Book an Appointment</a>
+                                            <a href="/Service/Edit/${item.serviceId}" class="btn btn-outline-warning">Edit</a>
+                                            <button type="button" class="btn btn-danger delete-service" data-service-id="${item.serviceId}" >Delete</button>
+                                            
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                            $(document).on("click",".delete-service",function(){
+                                                var serviceId = $(this).attr("data-service-id");
+                                                console.log(serviceId);
+                                            });
+
+                                $("#serviceList").append(card);
+
+                                $
+                            });
+
+                        },
+                            
+
+                        error: function(){
+                            console.log("Error Loading services");
+                        }
+                    });
+                });
+    </script>
+}
