@@ -1,0 +1,30 @@
+﻿/*HomePage hero*/
+.home-hero {
+    margin-top: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    background: linear-gradient( 135deg,#edf8f4 0%,#eaf1fb 100%);
+}
+
+    .home-hero h1 {
+        color: #183447;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+    }
+
+    .home-hero lead {
+        max-width: 36rem;
+        color: #536675;
+    }
+
+/*Illustration  Placeholder*/
+.hero-visual {
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.75);
+}

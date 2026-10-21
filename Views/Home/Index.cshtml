@@ -2,42 +2,38 @@
     ViewData["Title"] = "Home Page";
 }
 @model List<HomeEase_2._0_MVC.Models.DomainModels.CategoryModel>
+@section Styles{
+    <link 
+        rel="stylesheet"
+        href="~/css/home.css" asp-append-version="true" />
+}
+
 
     @* hero Section *@
-    <section id="hero" class="py-5">
+    <section id="hero" class="home-hero py-5">
         <div class="container">
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
         }
             <div class="row align-items-center">
-
                 <div class="col-lg-6">
-
                     <h1 class="display-4 fw-bold">Find Trusted Home Services</h1>
-
                     <p class="lead">
                         Book Verified professionals for Cleaning,
                         plumbing, electrical work, painting,
                         appliance repair and more.
                     </p>
-
-                    <a href="#" class="btn btn-primary me-2"> Book Now </a>
-                    <a href="#" class="btn btn-outline-primary">Explore Services</a>
+                    <a class="btn btn-primary me-2" asp-controller="Service" asp-action="Index"> Book Now </a>
+                    <a href="#categories" class="btn btn-outline-primary">Explore Services</a>
                 </div>
 
                 <div class="col-lg-6">
-
-                    <div class="text-center">
-
+                    <div class="text-center hero-visual">
                         <div class="display-2">🏠</div>
-
-                    <p>HomeEase Illustration</p>
-
-                    <h4> Images Coming Soon</h4>
-
+                         <p>HomeEase Illustration</p>
+                         <h4> Images Coming Soon</h4>
                     </div>
-
                 </div>
             </div>
         </div>
