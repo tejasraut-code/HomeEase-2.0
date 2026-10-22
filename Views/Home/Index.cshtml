@@ -56,8 +56,10 @@
                 <div class="col-12 col-sm-6 col-lg-3 mb-4">
                     <div class="card shadow h-100" id="cardC">
                         <div class="card-body text-center" >
-                            @* <div class="display-3">🧑🏼‍🔧</div> *@
-                            <img class="card-img rounded d-flex justify-content-center align-items-center" height="150px" width="150px" src="~/images/@item.Image" />
+                            <div class="category-image-frame">
+                                <img class="category-image" src="~/images/@item.Image"
+                                     alt="@item.CategoryName" loading="lazy" />
+                            </div>
                             <h4 class="card-title">@item.CategoryName</h4>
                             <p class="card-text">@item.Description</p>
 
