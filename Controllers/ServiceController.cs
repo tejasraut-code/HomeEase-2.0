@@ -220,6 +220,28 @@ namespace HomeEase_2._0_MVC.Controllers
                 return NotFound();
             }
             int categoryId = service.CategoryId;
+
+            bool hasProviderLinks = await _context.ProviderServices.AnyAsync(x=> x.ServiceId == id);
+            bool hasBooking = await _context.Bookings.AnyAsync(x => x.ServiceId == id);
+
+            if(hasProviderLinks || hasBooking)
+            {
+                string message = "This service cannot be deleted. It is linked to a provider or booking";
+
+                if (Request.Headers["X-Requested-With"]== "XMLHttpRequest")
+                {
+                    return Conflict(new
+                    {
+                        success = false,
+                        message
+                    });
+                }
+
+                TempData["ErrorMessage"] = message;
+
+                return RedirectToAction(nameof(Index), new { categoryId = categoryId });    
+            }
+
             _context.Services.Remove(service);
             await _context.SaveChangesAsync();
 

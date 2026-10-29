@@ -5,7 +5,13 @@
 
  <div class="container p-4">
 
-        <div class="d-flex justify-content-evenly">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class=" alert alert-warning" role="alert">@TempData["ErrorMessage"]</div>
+    }
+    <div id="serviceMessage" class="alert alert-warning d-none" role="alert"></div>
+
+    <div class="d-flex justify-content-evenly">
             <h2 id="categoryHeading">@ViewBag.categoryName</h2>
             <div>
             <select class="form-select" asp-for="SelectedCategoryId" asp-items="Model.CategoryOptions" >
@@ -107,8 +113,17 @@
                     }
                 },
 
-                error : function(){
-                    console.log("Delete request Failed");
+                error : function(responce){
+
+                    var message = "This service cannot be deleted because it is linked to provider or booking.";
+
+                    if(responce.responseJSON && responce.responseJSON.message){
+                        message = responce.responseJSON.message;
+                    }
+
+                    $("#serviceMessage").removeClass("d-none").text(message);
+
+                    console.log("Delete request Failed",responce.status);
                 }
             });
 
