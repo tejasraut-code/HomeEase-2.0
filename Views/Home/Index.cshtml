@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    string? userRole = Context.Session.GetString("Role");
 }
 @model List<HomeEase_2._0_MVC.Models.DomainModels.CategoryModel>
 @section Styles{
@@ -46,9 +47,15 @@
         <div class="container">
             <h2 class="text-center mb-5">Popular Categories</h2>
 
-        <a class="btn btn-info mb-3" asp-controller="Home" asp-action="Create" >Add Category</a>
-        <a class="btn btn-warning mb-3" asp-controller="Service" asp-action="Index">Go to Service Page</a>
-        <a class="btn btn-primary mb-3" asp-controller="Provider" asp-action="Register">Register As ServiceProvider</a>
+        @if(userRole == "Admin")
+        {
+            <a class="btn btn-primary mb-3" asp-controller="Home" asp-action="Create">Add Category</a>
+        }
+        @if(string.IsNullOrEmpty(userRole) || userRole == "Customer")
+        {
+            <a class="btn btn-outline-primary mb-3" asp-controller="Provider" asp-action="Register">Become a Service Provider</a>
+        }
+        
             <div class="row">
 
             @foreach (var item in Model)
@@ -65,14 +72,18 @@
 
                             <a class="btn btn-primary w-auto" asp-controller="Service" asp-action="Index" asp-route-categoryId="@item.CategoryId">Explore </a>
 
-                            <a class="btn btn-warning w-auto" asp-action="Edit" asp-route-id="@item.CategoryId" >Edit </a>
+                            @if(userRole == "Admin")
+                            {
+                                <a class="btn btn-warning w-auto" asp-action="Edit" asp-route-id="@item.CategoryId">Edit </a>
 
-                            <form asp-action="Delete" method="post">
-                                <input type="hidden" name="id" value="@item.CategoryId" />
-
-                                <button type="submit" onclick="return confirm('Are you sure you Want to delete this Category?')"
-                                    class="btn btn-danger w-auto">Delete</button>
-                            </form>
+                                <form asp-action="Delete" method="post">
+                                    <input type="hidden" name="id" value="@item.CategoryId" />
+                                    <button type="submit" onclick="return confirm('Are you sure you Want to delete this Category?')"
+                                            class="btn btn-danger w-auto">
+                                        Delete
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
