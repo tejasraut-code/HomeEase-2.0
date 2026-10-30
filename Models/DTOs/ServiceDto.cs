@@ -1,5 +1,4 @@
-﻿
-namespace HomeEase_2._0_MVC.Models.DTOs
+﻿namespace HomeEase_2._0_MVC.Models.DTOs
     {
         public class ServiceDto
         {
@@ -9,7 +8,7 @@ namespace HomeEase_2._0_MVC.Models.DTOs
             public decimal Price { get; set; }
             public string? Image { get; set; }
             public int? EstimatedDurationMinutes { get; set; }
-            //public DurationViewModel DurationView { get; set; } = new DurationViewModel();  
+            public DurationDto Duration { get; set; } = new DurationDto();  
             public string CategoryName { get; set; } = string.Empty;
         }
     }

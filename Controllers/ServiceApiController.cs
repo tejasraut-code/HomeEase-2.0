@@ -34,30 +34,30 @@ namespace HomeEase_2._0_MVC.Controllers
                 serviceDto.CategoryName = item.Category?.CategoryName ?? "Unknown Category";
                 serviceDto.Image = item.Image;
                 serviceDto.EstimatedDurationMinutes = item.EstimatedDurationMinutes;
-                //serviceDto.DurationView = MinutesToDuration(item.EstimatedDurationMinutes);
+                serviceDto.Duration = MinutesToDuration(item.EstimatedDurationMinutes);
 
                 serviceDtosList.Add(serviceDto);
             }
             return Ok(serviceDtosList);
         }
 
-        //public DurationViewModel MinutesToDuration(int? time)
-        //{
-        //    DurationViewModel durationView = new DurationViewModel();
-        //    if(time == null)
-        //    {
-        //        return durationView;
-        //    }
+        public DurationDto MinutesToDuration(int? time)
+        {
+            DurationDto durationView = new DurationDto();
+            if(time == null)
+            {
+                return durationView;
+            }
 
-        //    var totaltime = time.Value;
-        //    durationView.Days = totaltime / 1440;
+            var totaltime = time.Value;
+            durationView.Days = totaltime / 1440;
 
-        //    var timeremain = totaltime % 1440;
-        //    durationView.Hours = timeremain / 60;
-        //    durationView.Minutes = timeremain % 60;
+            var timeremain = totaltime % 1440;
+            durationView.Hours = timeremain / 60;
+            durationView.Minutes = timeremain % 60;
 
-        //    return durationView;
-        //}
+            return durationView;
+        }
     }
 
 }

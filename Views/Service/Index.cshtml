@@ -2,6 +2,9 @@
     ViewData["Title"] = "Service Page";
 }
 @model ServicePageViewModel
+@section Styles{
+    <link href="~/css/service.css" rel="stylesheet" />
+}
 
  <div class="container p-4">
 
@@ -11,61 +14,64 @@
     }
     <div id="serviceMessage" class="alert alert-warning d-none" role="alert"></div>
 
+    @* dropbox fillter *@
     <div class="d-flex justify-content-evenly">
-            <h2 id="categoryHeading">@ViewBag.categoryName</h2>
-            <div>
+         <h2 id="categoryHeading">@ViewBag.categoryName</h2>
+         <div>
             <select class="form-select" asp-for="SelectedCategoryId" asp-items="Model.CategoryOptions" >
                 <option value="">All Category</option>
             </select>
-            </div>
-        </div>
+         </div>
+    </div>
 
-        <h3 class="h3 text-center"> Book A Service </h3>
-        
-        <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
+    <h3 class="h3 text-center"> Book A Service </h3>
+    <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
 
-      <div class="row" id="serviceList">
+    @* servcie-card *@
+    <div class="row" id="serviceList">
        @if(!Model.Services.Any())
        {
             <p>No Service Available in this Category.</p>
-        }
+       }
        else
-        {
-
+       {
             @foreach (var item in Model.Services)
             {
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-img">
+                <div class="col-12 col-sm-6 col-lg-4 mb-4 service-card">
+                    <div class="card h-100 service-card-panel">
+                        <div class="service-image-frame">
                             @if (!string.IsNullOrEmpty(item.ExistingImage))
                             {
-                                <img src="~/images/@item.ExistingImage" class="img-fluid" alt="@item.ServiceName" />
+                                <img src="~/images/@item.ExistingImage" class="service-image" alt="@item.ServiceName" loading="lazy" />
                             }
                             else
                             {
-                                <div class="p-4 text-center">
+                                <div class="service-image-empty">
                                     No Image Available
                                 </div>
                             }
                         </div>
-                        <div class="card-header">
+                        <div class="card-header service-card-header">
                             <h3 class="card-title">@item.ServiceName</h3>
                             @* <p hidden>@item.ServiceId</p> *@
                             <p class="card-text">@item.CategoryName</p>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body service-card-body">
                             <p class="card-text">@item.Description</p>
                             <p class="card-text"><b>Rs.</b>@item.Price/-</p>
                             <p class="card-text">Estimated Time Required <br /> Days:@item.DurationView.Days  Hours:@item.DurationView.Hours    Minutes:@item.DurationView.Minutes </p>
+                        </div>
+                        <div class="card-footer service-card-actions">
 
-                            <a class="btn btn-info" asp-action="Create" asp-controller="Booking" asp-route-serviceId="@item.ServiceId">Book an Appoinment</a>
+                            <a class="btn btn-primary booking-action" asp-action="Create" asp-controller="Booking" asp-route-serviceId="@item.ServiceId">Book an Appoinment</a>
 
-                            <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-outline-warning">Edit</a>
+                            <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-warning">Edit</a>
 
-                            <form asp-action="Delete" asp-route-id="@item.ServiceId" method="post" onclick="return confirm('Are you sure you want to delete this service?')">
+                            <form class="service-delete-form" 
+                                asp-action="Delete" asp-route-id="@item.ServiceId" method="post" onsubmit="return confirm('Are you sure you want to delete this service?')">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -91,7 +97,7 @@
             if(!confirm("Are you sure you want to delete this service ?")){
                 return;
             }
-
+            // service-delete
             $.ajax({
                 url : "/Service/Delete",
                 type : "POST",
@@ -128,11 +134,12 @@
             });
 
         });
+
         $("#SelectedCategoryId").on("change",function (){
                     var categoryId =  $(this).val();
 
                     console.log(categoryId);
-
+                    // service
                     $.ajax({
                         url:"/api/services",
                         type: "GET",
@@ -174,25 +181,31 @@
                                 console.log(item.price);
 
                                 var card=`
-                                <div class="col-md-4 p-3 service-card">
-                                    <div class="card p-4">
-                                        <div class="card-img">
+                                <div class="col-12 col-sm-6 col-lg-4 mb-4 service-card">
+                                    <div class="card h-100 service-card-panel">
+                                        <div class="service-image-frame">
                                             ${item.image && item.image.length !== 0 
-                                                ? `<img src="/images/${item.image}" class="img-fluid">`
-                                                : `<p> No Image Available</p>`
+                                                ? `<img src="/images/${item.image}" class="service-image loading:"lazy">`
+                                                : `<div class="service-image-empty">No Image Available</div>`
                                             }
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body service-card-body">
                                         <h4>${item.serviceName}</h4>
                                         <p>${item.categoryName}</p>
                                         <p>${item.description}</p>
-                                        <p>Rs. ${item.price}</p>
-                                        <p> Total Time Required in Minutes : ${item.estimatedDurationMinutes}</p>
+                                        <p> <b>Rs.</b> ${item.price}/-</p>
+                                        <p style="margin-bottom:0;">Estimated Time Required </p>
+                                        <div class="service-duration">
+                                            <p>Day:${item.duration.days}</p>
+                                            <p>Hours:${item.duration.hours}</p>
+                                            <p>Minutes:${item.duration.minutes}</p>
                                         </div>
-                                        <div class="card-footer p-4">
-                                            <a href="/Booking/Create?serviceId=${item.serviceId}" class="btn btn-primary">Book an Appointment</a>
-                                            <a href="/Service/Edit/${item.serviceId}" class="btn btn-outline-warning">Edit</a>
-                                            <button type="button" class="btn btn-danger delete-service" data-service-id="${item.serviceId}" >Delete</button>
+                                        </div>
+                                        <div class="card-footer service-card-actions">
+
+                                            <a href="/Booking/Create?serviceId=${item.serviceId}" class="btn btn-primary booking-action">Book an Appointment</a>
+                                            <a href="/Service/Edit/${item.serviceId}" class="btn btn-warning">Edit</a>
+                                            <button type="button" class="btn btn-danger delete-service service-card-form" data-service-id="${item.serviceId}" >Delete</button>
                                             
                                         </div>
                                     </div>
