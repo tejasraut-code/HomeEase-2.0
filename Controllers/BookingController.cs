@@ -89,12 +89,12 @@ namespace HomeEase_2._0_MVC.Controllers
             ServiceModel? service = _context.Services.Find(bookingView.ServiceId);
             if (service == null)
             {
-                ModelState.AddModelError("", "Service No longer Available");
+                //ModelState.AddModelError("", "Service No longer Available");
                 return NotFound();
             }
             if(bookingView.ScheduledFor <= DateTime.Now)
             {
-                ModelState.AddModelError("", "Select a Future Date and Time");
+                ModelState.AddModelError(nameof(bookingView.ScheduledFor), "Select a Future Date and Time");
             }
             if (ModelState.IsValid)
             {
@@ -110,7 +110,7 @@ namespace HomeEase_2._0_MVC.Controllers
                 _context.Bookings.Add(booking);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index","Home");
+                return RedirectToAction(nameof(Index));
             }
             else
             {
