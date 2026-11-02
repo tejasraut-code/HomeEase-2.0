@@ -8,7 +8,7 @@
 
     <div class="card p-3 shadow">
         <div class="card-header d-flex justify-content-end">
-            <h3>Wellcome, @Model.ProviderName</h3>
+            <h3>Welcome, @Model.ProviderName</h3>
         </div>
         @if(ViewBag.Message != null)
         {
@@ -40,13 +40,13 @@
         </div>
     </div>
 
-    @if (!Model.ProviderBookingView.Any())
+    @if (ViewBag.Message == null && !Model.ProviderBookingView.Any())
     {
         <div class="alert alert-danger">
             <p>No Booking has been assigned to you.</p>
         </div>
     }
-    else
+    else if (ViewBag.Message == null)
     {
         <div class="table-responsive mt-3">
             <table class="table table-bordered table-active text-center p-3 ">
