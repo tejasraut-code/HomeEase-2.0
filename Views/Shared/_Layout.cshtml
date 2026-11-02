@@ -115,10 +115,16 @@
                             </li>
                         }
 
+                        @if (string.IsNullOrEmpty(userRole) || userRole == "Customer")
+                        {
+                            <li class="nav-item d-flex align-items-lg-center">
+                                <a class="btn btn-outline-light btn-sm ms-lg-2 my-1" asp-action="Register" asp-controller="Provider">Become a Provider</a>
+                            </li>
+                        }
                     </ul>
+
                 </div>
             </div>
-
         </nav>
     </header>
 
