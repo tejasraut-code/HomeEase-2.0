@@ -51,3 +51,47 @@
     object-fit:cover;
     object-position:center; 
 }
+
+/*Home trust Indicators*/
+.home-trust-item{
+    display:flex;
+    align-items:center;
+    gap:0.55rem;
+    min-height:2.75rem;
+}
+.home-trust-icon{
+    width:2.25rem;
+    height:2.25rem;
+    flex: 0 0 2.25rem;
+    border-radius:50%;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+    font-size:1.1rem;
+}
+.home-trust-label{
+    color:var(--he-muted);
+    font-size:0.85rem;
+    line-height:1.25;
+    font-weight:500;
+}
+
+.home-trust-icon--verified {
+    background: #DDF5E9;
+    color: #168154;
+}
+
+.home-trust-icon--pricing{
+    background:var(--he-orange-soft);
+    color:var(--he-orange);
+}
+
+.home-trust-icon--schedule {
+    background: #DDF2F3;
+    color:var(--he-primary)
+}
+.home-trust-icon--services {
+    background: #ECE8FA;
+    color: #7456B8;
+}

@@ -27,13 +27,41 @@
                     </p>
                     <a class="btn btn-primary me-2" asp-controller="Service" asp-action="Index"> Book Now </a>
                     <a href="#categories" class="btn btn-outline-primary">Explore Services</a>
+
+                <div class="row row-cols-2 row-cols-xxl-4 g-3 home-trust mt-3">
+                    <div class="col">
+                        <div class="home-trust-item">
+                            <span class="home-trust-icon home-trust-icon--verified">✓</span>
+                            <span class="home-trust-label">Verified <br />Professionals</span>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="home-trust-item">
+                            <span class="home-trust-icon home-trust-icon--pricing">₹</span>
+                            <span class="home-trust-label">Transparent <br />Pricing</span>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="home-trust-item">
+                            <span class="home-trust-icon home-trust-icon--schedule">◷</span>
+                            <span class="home-trust-label">Flexible <br /> Scheduling</span>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="home-trust-item">
+                            <span class="home-trust-icon home-trust-icon--services">★</span>
+                            <span class="home-trust-label">Wide Range <br /> of Services</span>
+                        </div>
+                    </div>
                 </div>
+                </div>
+            
 
                 <div class="col-lg-6">
                     <div class="text-center hero-visual">
-                        @* <div class="display-2">🏠</div> *@
-                         @* <p>HomeEase Illustration</p> *@
-                         @* <h4> Images Coming Soon</h4> *@
                         <img src="~/images/homeease-team-hero.png" alt="HomeEase professionals representing multiple home services" class="img-fluid hero-image" />
                     </div>
                 </div>
@@ -53,7 +81,7 @@
         }
         @if(string.IsNullOrEmpty(userRole) || userRole == "Customer")
         {
-            <a class="btn btn-outline-primary mb-3" asp-controller="Provider" asp-action="Register">Become a Service Provider</a>
+            <a class="btn btn-outline-primary d-lg-none mb-3" asp-controller="Provider" asp-action="Register">Become a Service Provider</a>
         }
         
             <div class="row">

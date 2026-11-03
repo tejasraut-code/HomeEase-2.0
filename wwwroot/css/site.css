@@ -1,3 +1,28 @@
+:root {
+    /* he = homeease*/
+    /* Brand colours */
+    --he-primary: #167C80;
+    --he-primary-dark: #12666A;
+    --he-accent: #27866F;
+    --he-dark: #183447;
+    /* Backgrounds */
+    --he-bg: #F7F9FA;
+    --he-surface: #FFFFFF;
+    --he-surface-mint: #EAF5F1;
+    --he-surface-blue: #EDF3F9;
+    /* Text and borders */
+    --he-text: #243746;
+    --he-muted: #617481;
+    --he-border: #DCE5E8;
+    /* Shared effects */
+    --he-radius: 1rem;
+    --he-shadow: 0 0.25rem 0.75rem rgba(24, 52, 71, 0.10); 
+    /* Orange accent */
+    --he-orange: #E88935;
+    --he-orange-soft: #FFF1E5;
+}
+
+
 html {
   font-size: 14px;
 }
@@ -19,4 +44,31 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color:var(--he-bg);
+  color:var(--he-text);
+}
+
+.he-navbar{
+    background-color:var(--he-dark);
+}
+
+/*HomeEase Primary Button*/
+.btn-primary{
+    background-color:var(--he-primary);
+    border-color:var(--he-primary);
+}
+.btn-primary:hover{
+    background-color:var(--he-primary-dark);
+    border-color:var(--he-primary-dark);
+}
+
+/*HomeEase outline button*/
+.btn-outline-primary{
+    color:var(--he-primary);
+    border-color:var(--he-primary);
+}
+.btn-outline-primary:hover{
+    background-color:var(--he-primary);
+    color:#fff;
+    border-color:var(--he-primary-dark);
 }
