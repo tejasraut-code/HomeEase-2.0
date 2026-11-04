@@ -1,25 +1,29 @@
 :root {
-    /* he = homeease*/
+
     /* Brand colours */
-    --he-primary: #167C80;
-    --he-primary-dark: #12666A;
-    --he-accent: #27866F;
-    --he-dark: #183447;
-    /* Backgrounds */
-    --he-bg: #F7F9FA;
-    --he-surface: #FFFFFF;
-    --he-surface-mint: #EAF5F1;
-    --he-surface-blue: #EDF3F9;
+    --he-primary: #167C80; /* Primary Teal */
+    --he-primary-dark: #12666A; /* Dark Teal - Hover */
+    --he-accent: #27866F; /* Accent Green */
+    --he-dark: #183447; /* Deep Navy */
+
+    /* Background colours */
+    --he-bg: #F7F9FA; /* Off-white Page Background */
+    --he-surface: #FFFFFF; /* White Cards and Forms */
+    --he-surface-mint: #EAF5F1; /* Soft Mint */
+    --he-surface-blue: #EDF3F9; /* Soft Blue */
+
     /* Text and borders */
-    --he-text: #243746;
-    --he-muted: #617481;
-    --he-border: #DCE5E8;
+    --he-text: #243746; /* Main Text */
+    --he-muted: #617481; /* Secondary Text */
+    --he-border: #DCE5E8; /* Light Border */
+
     /* Shared effects */
-    --he-radius: 1rem;
-    --he-shadow: 0 0.25rem 0.75rem rgba(24, 52, 71, 0.10); 
-    /* Orange accent */
-    --he-orange: #E88935;
-    --he-orange-soft: #FFF1E5;
+    --he-radius: 1rem; /* Standard Border Radius */
+    --he-shadow: 0 0.25rem 0.75rem rgba(24, 52, 71, 0.10);
+
+    /* Orange accents */
+    --he-orange: #E88935; /* Warm Orange */
+    --he-orange-soft: #FFF1E5; /* Soft Orange Background */
 }
 
 
@@ -71,4 +75,14 @@ body {
     background-color:var(--he-primary);
     color:#fff;
     border-color:var(--he-primary-dark);
+}
+
+.nav-user-item{
+    display:flex;
+    align-items:center;
+}
+
+/* Keep welcome text spacing consistent with navbar links */
+.navbar-nav .navbar-text {
+    display: block;
 }

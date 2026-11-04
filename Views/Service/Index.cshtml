@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Service Page";
+    string? userRole = Context.Session.GetString("Role");
 }
 @model ServicePageViewModel
 @section Styles{
@@ -25,8 +26,12 @@
     </div>
 
     <h3 class="h3 text-center"> Book A Service </h3>
-    <a class="btn btn-outline-primary" asp-controller="Service" asp-action="Create">Create a New Service.</a>
 
+    @if(userRole == "Admin")
+    {
+        <a class="btn btn-outline-primary mb-3" asp-controller="Service" asp-action="Create">Create a New Service.</a>
+    }
+    
     @* servcie-card *@
     <div class="row" id="serviceList">
        @if(!Model.Services.Any())

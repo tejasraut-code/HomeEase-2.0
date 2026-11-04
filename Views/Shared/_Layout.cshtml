@@ -1,6 +1,7 @@
 ﻿@{
     string? userName = Context.Session.GetString("UserName");
     string? userRole = Context.Session.GetString("Role");
+    bool isLoggedIn = !string.IsNullOrEmpty(userRole);
 }
 
 <!DOCTYPE html>
@@ -24,9 +25,10 @@
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">HomeEase 2.0</a>
 
                 <button class="navbar-toggler" type="button" 
-                data-bs-toggle="collapse" data-bs-target="#navbarMenu">
-
-                <span class="navbar-toggler-icon"></span>
+                    data-bs-toggle="collapse" data-bs-target="#navbarMenu" 
+                    aria-controls="navbarMenu" aria-expanded="false" 
+                    aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
                 </button>
                 
                 <div class="collapse navbar-collapse" id="navbarMenu">
@@ -45,7 +47,48 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+
+                        @if (!string.IsNullOrEmpty(userName))
+                        {
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="Booking" asp-controller="Admin">
+                                        Manage Bookings
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="Provider" asp-controller="Admin">
+                                        Provider Approvals
+                                    </a>
+                                </li>
+
+                            }
+                            else if (userRole == "Customer")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="Index" asp-controller="Booking">
+                                        My Bookings
+                                    </a>
+                                </li>
+                            }
+                            else if (userRole == "ServiceProvider")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="Index" asp-controller="Provider">
+                                        Provider Dashboard
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="nav-item nav-user-item">
+                                <span class="navbar-text px-lg-2">
+                                    Welcome, <strong>@userName</strong>
+                                </span>
+                            </li>
+                        }
+
+                        @* <li class="nav-item">
                             <a class="nav-link" href="#">
                                 About
                             </a>
@@ -55,52 +98,9 @@
                             <a class="nav-link" href="#">
                                 Contact
                             </a>
-                        </li>
+                        </li> *@
 
-
-                        @if (!string.IsNullOrEmpty(userName))
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link"> Welcome, @userName </span>
-                            </li>
-
-                            @if (userRole == "Admin")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Booking" asp-controller="Admin">
-                                        Admin Bookings
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Provider" asp-controller="Admin">
-                                        Provider Check
-                                    </a>
-                                </li>
-
-                            }else if(userRole == "Customer")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Booking">
-                                        My Bookings
-                                    </a>
-                                </li>
-                            }
-                            else if(userRole == "ServiceProvider")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Provider">
-                                        Provider DashBoard
-                                    </a>
-                                </li>
-                            }
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Logout" asp-controller="Account">
-                                    Logout
-                                </a>
-                            </li>
-                        }
-                        else
+                        @if(!isLoggedIn)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-action="Login" asp-controller="Account">
@@ -114,8 +114,16 @@
                                 </a>
                             </li>
                         }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Logout" asp-controller="Account">
+                                    Logout
+                                </a>
+                            </li>
+                        }
 
-                        @if (string.IsNullOrEmpty(userRole) || userRole == "Customer")
+                        @if (!isLoggedIn || userRole == "Customer")
                         {
                             <li class="nav-item d-flex align-items-lg-center">
                                 <a class="btn btn-outline-light btn-sm ms-lg-2 my-1" asp-action="Register" asp-controller="Provider">Become a Provider</a>

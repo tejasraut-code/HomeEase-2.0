@@ -87,7 +87,20 @@ namespace HomeEase_2._0_MVC.Controllers
                 HttpContext.Session.SetString("UserName", user.UserName);
                 HttpContext.Session.SetString("Role", user.Role);
 
-                return RedirectToAction("Index", "Booking");
+                //return RedirectToAction("Index", "Booking");
+                if(user.Role == "Admin")
+                {
+                    return RedirectToAction(nameof(AdminController.Booking), "Admin");
+                }
+                else if(user.Role == "ServiceProvider")
+                {
+                    return RedirectToAction(nameof(ProviderController.Index), "Provider");
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BookingController.Index), "Booking");
+                }
+
             }
             return View(loginView);
         }
