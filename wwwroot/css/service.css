@@ -4,8 +4,8 @@
     border: 1px solid var(--he-border);
     border-radius:var(--he-radius);
     overflow: hidden;
-    background-color:var(--hr-surface);
-    box-shadow: var(--hr-shadow);
+    background-color:var(--he-surface);
+    box-shadow: var(--he-shadow);
     transition: transform 0.2s ease,box-shadow 0.2s ease;
 }
     .service-card-panel:hover {
@@ -17,7 +17,7 @@
     width: 100%;
     aspect-ratio: 4/3;
     overflow: hidden;
-    background-color: var(--hr-surface-blue);
+    background-color: var(--he-surface-blue);
 }
 
 .service-image{

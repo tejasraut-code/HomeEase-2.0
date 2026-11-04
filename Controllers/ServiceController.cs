@@ -62,6 +62,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var accessResult = CheckAdminAccess();
+            if(accessResult != null)
+            {   
+                return accessResult;
+            }
+            
             ServiceViewModel viewService = new ServiceViewModel();
 
             List<CategoryModel> categories = await _context.Category.ToListAsync();
@@ -72,6 +78,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ServiceViewModel viewService)
         {
+            var accessResult = CheckAdminAccess();
+            if(accessResult != null)
+            {
+                return accessResult;
+            }
+
             List<CategoryModel> categories = await _context.Category.ToListAsync();
             viewService.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
 
@@ -128,6 +140,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var accessResult = CheckAdminAccess();
+            if(accessResult != null)
+            {
+                return accessResult;
+            }
+
             ServiceModel? service = await _context.Services.FindAsync(id);
             ServiceViewModel serviceView = new ServiceViewModel();
             List<CategoryModel> categories = new List<CategoryModel>();
@@ -155,6 +173,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ServiceViewModel serviceView)
         {
+            var accessResult = CheckAdminAccess();
+            if(accessResult != null)
+            {
+                return accessResult;
+            }
+
             List<CategoryModel> categories = await _context.Category.ToListAsync();
             serviceView.CategoryOptions = new SelectList(categories, "CategoryId", "CategoryName");
             if (ModelState.IsValid)
@@ -213,6 +237,11 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            var accessResult = CheckAdminAccess();
+            if (accessResult != null)
+            {
+                return accessResult;
+            }
             ServiceModel? service = await _context.Services.FindAsync(id);
       
             if(service == null)
@@ -310,6 +339,21 @@ namespace HomeEase_2._0_MVC.Controllers
             {
                 System.IO.File.Delete(fileUploadPath);
             }
+        }
+
+        private IActionResult? CheckAdminAccess()
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+
+            if (string.IsNullOrEmpty(userRole))
+            {
+                return RedirectToAction(nameof(AccountController.Login), "Account");
+            }
+            if(userRole != "Admin")
+            {
+                return StatusCode(403);
+            }
+            return null;
         }
 
     }
