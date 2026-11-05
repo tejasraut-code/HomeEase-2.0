@@ -15,7 +15,7 @@ namespace HomeEase_2._0_MVC.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public IActionResult Booking()
         {

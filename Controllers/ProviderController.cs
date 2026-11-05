@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace HomeEase_2._0_MVC.Controllers
 {
@@ -21,14 +22,12 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Index()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            string? userRole = HttpContext.Session.GetString("Role");
-            if(userId == null)
+            //string? userRole = HttpContext.Session.GetString("Role");
+           
+            var accessResult = CheckProviderAccess();
+            if(accessResult != null)
             {
-                return RedirectToAction("Login", "Account");
-            }
-            if(userRole != "ServiceProvider")
-            {
-                return RedirectToAction("Index", "Home");
+                return accessResult;
             }
 
             ProviderProfileModel? providerProfile = _context.ProviderProfiles.Include(x => x.User).FirstOrDefault(x => x.UserId == userId);
@@ -36,7 +35,6 @@ namespace HomeEase_2._0_MVC.Controllers
             {
                 return NotFound();
             }
-
 
             List<ProviderServiceModel>providerServices = _context.ProviderServices.Include( x=> x.Service).Where(x => x.ProviderId == providerProfile.ProviderId).ToList();
 
@@ -98,16 +96,18 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult CompleteBooking(int bookingId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            string? userRole = HttpContext.Session.GetString("Role");
-            if(userRole != "ServiceProvider")
+            //string? userRole = HttpContext.Session.GetString("Role");
+
+            var accessResult = CheckProviderAccess();
+            if(accessResult != null)
             {
-                return RedirectToAction("Index", "Home");
+                return accessResult;
             }
 
-            ProviderProfileModel? providerProfile = _context.ProviderProfiles.FirstOrDefault( x=> x.UserId == userId);
+            ProviderProfileModel ? providerProfile = _context.ProviderProfiles.FirstOrDefault( x=> x.UserId == userId);
             if(providerProfile == null)
             {
-                return RedirectToAction("Login","Account");
+                return NotFound();
             }
             BookingProviderModel? bookingProvider = _context.BookingProviders.Include(x => x.Booking).FirstOrDefault(x => x.BookingId == bookingId && x.ProviderId == providerProfile.ProviderId);
             if(bookingProvider == null)
@@ -205,6 +205,24 @@ namespace HomeEase_2._0_MVC.Controllers
             }
 
             return View(providerRegisterView);
+        }
+
+        private IActionResult? CheckProviderAccess()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            string? userRole = HttpContext.Session.GetString("Role");
+
+            if(string.IsNullOrEmpty(userRole) || userId == null)
+            {
+                return RedirectToAction(nameof(AccountController.Login), "Account");
+            }
+
+            if(userRole != "ServiceProvider")
+            {
+                return StatusCode(403);
+            }
+
+            return null;
         }
     }
 }
