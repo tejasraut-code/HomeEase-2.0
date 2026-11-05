@@ -19,9 +19,10 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Index()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            if(userId == null)
+            var accessResult = CheckCustomerAccess();
+            if(accessResult != null)
             {
-                return RedirectToAction("Login", "Account");
+                return accessResult;
             }
 
             List<BookingIndexViewModel> bookingIndex = new List<BookingIndexViewModel>();
@@ -53,10 +54,11 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Create(int serviceId)
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if(userId == null)
+            //int? userId = HttpContext.Session.GetInt32("UserId");
+            var accessResult = CheckCustomerAccess();
+            if (accessResult != null)
             {
-                return RedirectToAction("Login", "Account");
+                return accessResult;
             }
 
             BookingViewModel bookingView = new BookingViewModel();
@@ -79,9 +81,10 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Create(BookingViewModel bookingView)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
+            var accessResult = CheckCustomerAccess();
+            if (accessResult != null)
             {
-                return RedirectToAction("Login", "Account");
+                return accessResult;
             }
 
             BookingModel booking = new BookingModel();
@@ -126,9 +129,10 @@ namespace HomeEase_2._0_MVC.Controllers
         public IActionResult Cancel(int bookingId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if(userId == null)
+            var accessResult = CheckCustomerAccess();
+            if (accessResult != null)
             {
-                return RedirectToAction("Login", "Account");
+                return accessResult;
             }
 
             BookingModel? booking = _context.Bookings.FirstOrDefault(x => x.UserId == userId && x.BookingId ==bookingId);
@@ -169,5 +173,21 @@ namespace HomeEase_2._0_MVC.Controllers
 
         }
 
+        private IActionResult? CheckCustomerAccess()
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if(string.IsNullOrEmpty(userRole) || userId == null)
+            {
+                return RedirectToAction(nameof(AccountController.Login), "Account");
+            }
+            if(userRole != "Customer")
+            {
+                return StatusCode(403);
+            }
+
+            return null;
+        }
     }
 }

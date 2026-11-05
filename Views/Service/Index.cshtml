@@ -2,6 +2,7 @@
     ViewData["Title"] = "Service Page";
     string? userRole = Context.Session.GetString("Role");
     bool isAdmin = userRole == "Admin";
+    bool canBook = string.IsNullOrEmpty(userRole) || userRole == "Customer";
 }
 @model ServicePageViewModel
 @section Styles{
@@ -74,7 +75,10 @@
                         </div>
                         <div class="card-footer service-card-actions">
 
-                            <a class="btn btn-primary booking-action" asp-action="Create" asp-controller="Booking" asp-route-serviceId="@item.ServiceId">Book an Appoinment</a>
+                            @if (canBook)
+                            {
+                                <a class="btn btn-primary booking-action" asp-action="Create" asp-controller="Booking" asp-route-serviceId="@item.ServiceId">Book an Appointment</a>
+                            }
 
                             @if(userRole == "Admin")
                             {
@@ -100,6 +104,7 @@
 @section Scripts{
     <script>
         const isAdmin = @(isAdmin ? "true" : "false");
+        const canBook = @(canBook ? "true" : "false");
         $(document).on("click",".delete-service",function()
         {
             var serviceId = $(this).attr("data-service-id");
@@ -193,12 +198,19 @@
                             data.forEach(function (item){
 
                             let adminAction = "";
+                            let bookingAction = "";
                             if(isAdmin){
                                 adminAction = `
                                             <a href="/Service/Edit/${item.serviceId}" class="btn btn-warning">Edit</a>
                                             <button type="button" class="btn btn-danger delete-service service-card-form" data-service-id="${item.serviceId}" >Delete</button>
                                             `;
 
+                            }
+                            if(canBook){
+                                bookingAction=`
+                                 <a href="/Booking/Create?serviceId=${item.serviceId}" class="btn btn-primary booking-action">Book an Appointment</a>
+
+                                `;
                             }
 
                                 console.log(item.serviceName);
@@ -229,9 +241,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer service-card-actions">
-
-                                            <a href="/Booking/Create?serviceId=${item.serviceId}" class="btn btn-primary booking-action">Book an Appointment</a>
-
+                                            ${bookingAction}
                                             ${adminAction}
                                         </div>
                                     </div>
