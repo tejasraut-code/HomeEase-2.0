@@ -15,14 +15,14 @@ namespace HomeEase_2._0_MVC.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
         public IActionResult Booking()
         {
-            string? userRole = HttpContext.Session.GetString("Role");
-            if(userRole != "Admin")
+            var adminAccess = CheckAdminAccess();
+            if(adminAccess != null)
             {
-                return RedirectToAction("Index", "Home");
+                return adminAccess;
             }
             List<BookingAdminViewModel> bookingAdminView = new List<BookingAdminViewModel>();
             List<BookingModel> bookings = _context.Bookings.Include(x =>x.User).OrderByDescending(x => x.CreatedAt).ToList();
@@ -48,10 +48,10 @@ namespace HomeEase_2._0_MVC.Controllers
         //[HttpPost]
         //public IActionResult Confirm(int bookingId)
         //{
-        //    string? userRole = HttpContext.Session.GetString("Role");
-        //    if(userRole != "Admin")
+        ////    var adminAccess = CheckAdminAccess();
+        //    if(adminAccess != null)
         //    {
-        //        return RedirectToAction("Index", "Home");
+        //        return adminAccess;
         //    }
 
         //    BookingModel? booking = _context.Bookings.FirstOrDefault(x=>x.BookingId == bookingId);
@@ -73,10 +73,10 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Complete(int bookingId)
         {
-            string? userRole = HttpContext.Session.GetString("Role");
-            if(userRole != "Admin")
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
             {
-                return RedirectToAction("Index", "Home");
+                return adminAccess;
             }
 
             BookingModel? booking = _context.Bookings.FirstOrDefault(x => x.BookingId == bookingId);
@@ -96,11 +96,10 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Provider()
         {
-            string? userRole = HttpContext.Session.GetString("Role");
-
-            if(userRole != "Admin")
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
             {
-                return RedirectToAction("Login", "Account");
+                return adminAccess;
             }
 
             List<ProviderProfileModel> providerProfiles = _context.ProviderProfiles.Include(x => x.User).ToList();
@@ -129,10 +128,10 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult ApproveProvider(int providerId)
         {
-            string? userRole = HttpContext.Session.GetString("Role");
-            if(userRole != "Admin")
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
             {
-                return RedirectToAction("Login", "Account");
+                return adminAccess;
             }
 
             ProviderProfileModel? providerProfile = _context.ProviderProfiles.Find(providerId);
@@ -153,9 +152,10 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult AssignProvider(int bookingId)
         {
-            if(!CheckAdmin())
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
             {
-                return RedirectToAction("Index", "Home");
+                return adminAccess;
             }
 
             AssignProviderViewModel AssignProviderView = new AssignProviderViewModel();
@@ -188,9 +188,10 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult AssignProvider(AssignProviderViewModel assignProviderView)
         {
-            if (!CheckAdmin())
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
             {
-                return RedirectToAction("Index", "Home");
+                return adminAccess;
             }
 
             BookingModel? booking = _context.Bookings.Find(assignProviderView.BookingId);
@@ -269,14 +270,18 @@ namespace HomeEase_2._0_MVC.Controllers
             return duration;
         }
 
-        private bool CheckAdmin()
+        private IActionResult? CheckAdminAccess()
         {
-            string? Role = HttpContext.Session.GetString("Role");
-            if (Role == "Admin")
+            string? userRole = HttpContext.Session.GetString("Role");
+            if (string.IsNullOrEmpty(userRole))
             {
-                return true;
+                return RedirectToAction(nameof(AccountController.Login), "Account");
             }
-            return false;
+            if (userRole != "Admin")
+            {
+                return StatusCode(403);
+            }
+            return null;
         }
     }
 }
