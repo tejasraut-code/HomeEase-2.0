@@ -89,7 +89,7 @@
             {
                 <div class="col-12 col-sm-6 col-lg-3 mb-4">
                     <div class="card shadow h-100" id="cardC">
-                        <div class="card-body text-center" >
+                        <div class="card-body text-center d-flex flex-column" >
                             <div class="category-image-frame">
                                 <img class="category-image" src="~/images/@item.Image"
                                      alt="@item.CategoryName" loading="lazy" />
@@ -97,20 +97,22 @@
                             <h4 class="card-title">@item.CategoryName</h4>
                             <p class="card-text">@item.Description</p>
 
-                            <a class="btn btn-primary w-auto" asp-controller="Service" asp-action="Index" asp-route-categoryId="@item.CategoryId">Explore </a>
+                            <div class="category-card-actions mt-auto">
+                                <a class="btn btn-primary w-auto" asp-controller="Service" asp-action="Index" asp-route-categoryId="@item.CategoryId">Explore </a>
 
-                            @if(userRole == "Admin")
-                            {
-                                <a class="btn btn-warning w-auto" asp-action="Edit" asp-route-id="@item.CategoryId">Edit </a>
+                                @if (userRole == "Admin")
+                                {
+                                    <a class="btn btn-warning w-auto" asp-action="Edit" asp-route-id="@item.CategoryId">Edit </a>
 
-                                <form asp-action="Delete" method="post">
-                                    <input type="hidden" name="id" value="@item.CategoryId" />
-                                    <button type="submit" onclick="return confirm('Are you sure you Want to delete this Category?')"
-                                            class="btn btn-danger w-auto">
-                                        Delete
-                                    </button>
-                                </form>
-                            }
+                                    <form asp-action="Delete" method="post" class="m-0">
+                                        <input type="hidden" name="id" value="@item.CategoryId" />
+                                        <button type="submit" onclick="return confirm('Are you sure you Want to delete this Category?')"
+                                                class="btn btn-danger w-auto">
+                                            Delete
+                                        </button>
+                                    </form>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

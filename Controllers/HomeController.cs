@@ -34,12 +34,23 @@ namespace HomeEase_2._0_MVC.Controllers
         //Create 
         public IActionResult Create()
         {
+            var adminAccess = CheckAdminAccess();
+            if(adminAccess != null)
+            {
+                return adminAccess;
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(CategoryViewModel viewCategory)
         {
+            var adminAccess = CheckAdminAccess();
+            if(adminAccess != null)
+            {
+                return adminAccess;
+            }
+
             if (ModelState.IsValid)
             {
                 CategoryModel category = new CategoryModel();
@@ -79,6 +90,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
+            {
+                return adminAccess;
+            }
+
             CategoryModel? category = _context.Category.Find(id);
 
             if(category == null)
@@ -99,6 +116,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Edit(CategoryViewModel viewCategory)
         {
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
+            {
+                return adminAccess;
+            }
+
             if (ModelState.IsValid)
             {
                 string? existingImgPath = null;
@@ -142,6 +165,12 @@ namespace HomeEase_2._0_MVC.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            var adminAccess = CheckAdminAccess();
+            if (adminAccess != null)
+            {
+                return adminAccess;
+            }
+
             CategoryModel? category = _context.Category.Find(id);
 
             if (category == null)
@@ -203,6 +232,22 @@ namespace HomeEase_2._0_MVC.Controllers
             {
                 System.IO.File.Delete(fileDeletePath);
             }
+        }
+
+        private IActionResult? CheckAdminAccess()
+        {
+            string? userRole = HttpContext.Session.GetString("Role");
+
+            if (string.IsNullOrEmpty(userRole))
+            {
+                return RedirectToAction(nameof(AccountController.Login), "Account");
+            }
+            if(userRole != "Admin")
+            {
+                return StatusCode(403);
+            }
+
+            return null;
         }
     }
 }

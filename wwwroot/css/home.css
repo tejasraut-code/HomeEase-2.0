@@ -95,3 +95,15 @@
     background: #ECE8FA;
     color: #7456B8;
 }
+
+.category-card-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:0.5rem;
+}
+
+.category-card-actions form{
+    margin: 0;
+}
